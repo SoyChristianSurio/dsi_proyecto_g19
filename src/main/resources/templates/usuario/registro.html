@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+</head>
+
+<body>
+	<div th:insert="layouts/navbar_default.html" th:remove="tag"></div>
+
+
+	<div class="container" >
+		<div class="card text-center">
+			<div class="card-header text-center ">
+				<h3 class="text-secondary">Facultad de Química y Farmacia:</h3>
+				<h5 class="text-secondary">sistema para la realizacion de solicitudes</h5> 
+				
+			</div>
+			<div class="card-body">
+				<div class="col-sm-10 col-md-8 col-lg-6">
+
+					<h3 class="text-secondary row">Regístrate</h3>
+					<h6 class="row">Campos oblgatorios *</h6>
+
+					<div th:if="${registrado}" class="alert alert-success" role="alert">¡Registrado
+						con éxito! - inicia sesión (login)</div>
+
+					<form th:action="@{/usuario/registro}" th:object="${usuario}" th:method="post">
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>Primer Nombre*</td>
+									<td>
+										<input 
+											type="text" th:field="*{pNombre}"
+											class="form-control form-control-sm"
+											onkeyup="myFunction2('pNombre')" /> 
+										<small
+											class="form-text text-danger"
+											th:if="${#fields.hasErrors('pNombre')}" 
+											th:errors="*{pNombre}">
+										</small>
+									</td>
+								</tr>
+								<tr>
+									<td>Segundo Nombre</td>
+									<td>
+										<input 
+											type="text" th:field="*{sNombre}"
+											class="form-control form-control-sm"
+											onkeyup="myFunction2('sNombre')" /> 
+										<small 
+											class="form-text text-danger"
+											th:if="${#fields.hasErrors('sNombre')}" th:errors="*{sNombre}">
+										</small>
+									</td>
+								</tr>
+								<tr>
+									<td>Primer Apellido*</td>
+									<td>
+										<input 
+											type="text" 
+											th:field="*{pApellido}"
+											class="form-control form-control-sm"
+											onkeyup="myFunction2('pApellido')" /> 
+										<small
+											class="form-text text-danger"
+											th:if="${#fields.hasErrors('pApellido')}"
+											th:errors="*{pApellido}">
+										</small>
+									</td>
+								</tr>
+								<tr>
+									<td>Segundo Apellido*</td>
+									<td><input type="text" th:field="*{sApellido}"
+										class="form-control form-control-sm"
+										onkeyup="myFunction2('sApellido')" /> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('sApellido')}"
+										th:errors="*{sApellido}"></small></td>
+								</tr>
+								<tr>
+									<td>Carnet*</td>
+									<td><input type="text" th:field="*{carnet}"
+										class="form-control form-control-sm"
+										onkeyup="myFunction2('carnet')" /> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('carnet')}" th:errors="*{carnet}"></small></td>
+								</tr>
+								<tr>
+									<td>Contraseña*</td>
+									<td><input type="password" th:field="*{password}"
+										class="form-control form-control-sm" /> <small
+										class="form-text text-danger"
+										th:if="${#fields.hasErrors('password')}"
+										th:errors="*{password}"></small></td>
+								</tr>
+								<tr>
+									<td>Repetir Contraseña*</td>
+									<td><input type="password" th:field="*{password2}"
+										class="form-control form-control-sm" /></td>
+								</tr>
+								<tr>
+									<td colspan="2"> <!-- MENSAJES DE ERROR DEL FORMULARIO DE REGISTRO -->
+										<div class="alert alert-danger alert-block"
+											th:if="${errorMessage!=null}" th:text="${errorMessage}"></div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<button type="submit"
+											class="btn btn-outline-success btn-block"
+											onclick="document.getElementById('form2').formSubmit()">Registrar</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+
+			</div><!-- END CARD BODY -->
+			<div class="card-footer text-muted text-right">Powered by SpringBoot and Thymeleaf. Creado por Christian Surio, artista frustrado</div>
+		</div>
+		
+	</div> <!-- End container -->
+	<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/util/funcionesRegistro.js}"></script>
+</body>
+</html>

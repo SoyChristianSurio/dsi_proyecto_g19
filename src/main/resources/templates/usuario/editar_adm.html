@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" -->
+<!-- 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" -->
+<!-- 	crossorigin="anonymous"> -->
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+        <script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+        <script type="text/javascript" src="/js/popper.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	    
+	    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+        <script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+        
+        <!--DataTables CSS-->
+        <link rel="stylesheet" href="/js/datatables.min.css">
+        <link rel="stylesheet" href="/js/DataTables-1.10.21/css/dataTables.bootstrap4.min.css">
+        <script type="text/javascript" src="/js/datatables.min.js"></script>
+</head>
+<body>
+
+	<div th:insert="layouts/navbar_admin.html" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		<div class="card bg-light mb-3">
+			<div class="card-header">
+				<h3 class="card-title text-success">Listado de usuarios</h3>
+			</div>
+			
+			<div class="card-body" style="overflow-x:scroll">
+				
+				<h3 th:if="${usuario}==null" >El usuario no existe</h3>
+				<a th:if="${usuario}==null" class="btn btn-dark" th:href="@{/usuario/lista}">Regresar</a>
+				
+				<form th:if="${usuario}!=null" th:id="'edit_form'" th:action="@{/usuario/editar}" th:object="${usuario}" th:method="post">
+					<input type="hidden" th:field="*{id}">
+					<input type="hidden" th:field="*{estudiante}">
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Primer Nombre</label>
+						<div class="">
+							<input type="text" th:field="*{pNombre}"
+								onkeyup="myFunction2('pNombre')"
+								class="form-control form-control-sm" />
+							<div class="alert-danger" th:if="${#fields.hasErrors('pNombre')}"
+								th:errors="*{pNombre}"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Segundo Nombre</label>
+						<div class="">
+							<input type="text" th:field="*{sNombre}"
+							onkeyup="myFunction2('sNombre')"
+								class="form-control form-control-sm" />
+							<div class="alert-danger" th:if="${#fields.hasErrors('sNombre')}"
+								th:errors="*{sNombre}"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Primer Apellido</label>
+						<div>
+							<input type="text" th:field="*{pApellido}"
+								onkeyup="myFunction2('pApellido')"
+								class="form-control form-control-sm" />
+							<div class="alert-danger"
+								th:if="${#fields.hasErrors('pApellido')}"
+								th:errors="*{pApellido}"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Segundo Apellido</label>
+						<div>
+							<input type="text" th:field="*{sApellido}"
+								onkeyup="myFunction2('sApellido')"
+								class="form-control form-control-sm" />
+							<div class="alert-danger"
+								th:if="${#fields.hasErrors('sApellido')}"
+								th:errors="*{sApellido}"></div>
+						</div>
+					</div>
+								
+					<div class="form-group row"><!-- ###################################### CARNET o USERNAME ##################################### -->
+						<label class="col-form-label col-sm-2" th:text="${usuario.estudiante}? 'Carnet':'Username'"></label>
+						<div th:if="${!usuario.estudiante}">
+							<input type="text" th:field="*{username}"
+								onkeyup="myFunction2('username')"
+								class="form-control form-control-sm" />
+							<input type="hidden" th:field="*{carnet}"/>
+							<div class="alert-danger" th:if="${#fields.hasErrors('carnet')}"
+								th:errors="*{carnet}">
+							</div>
+						</div>
+						<div th:if="${usuario.estudiante}">
+							<input type="text" th:field="*{carnet}"
+								class="form-control form-control-sm" />
+							<div class="alert-danger" th:if="${#fields.hasErrors('carnet')}" th:errors="*{carnet}"></div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Email</label>
+						<div>
+							<input type="text" th:field="*{email}"
+								class="form-control form-control-sm" />
+							<div class="alert-danger"
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-outline-success"
+						onclick="document.getElementById('edit_form').formSubmit()">Actualizar</button>
+					<a class="btn btn-dark" th:href="@{/usuario/lista}">Cancelar</a>
+				</form>
+				
+			</div>
+		</div>
+		<div class="alert alert-warning alert-dismissible fade show"
+			role="alert">
+			<strong>Holy guacamole!</strong> You should check in on some of those
+			fields below.
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<h3 class="text-secondary" th:text="'hey kid! do i have your atention? '"></h3>
+		
+		
+	</div>
+<script type="text/javascript" th:src="@{/js/util/funcionesRegistro.js}"></script>
+</body>
+</html>

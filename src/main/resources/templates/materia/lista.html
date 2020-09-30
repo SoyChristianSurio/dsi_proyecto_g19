@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Lista de usuarios</title>
+
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+        <script type="text/javascript" th:src="@{/js/jquery-3.5.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	    
+	    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+        <script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+        
+        <!--DataTables CSS-->
+        <link rel="stylesheet" th:href="@{/js/datatables.min.css}">
+        <link rel="stylesheet" th:href="@{/js/DataTables-1.10.21/css/dataTables.bootstrap4.min.css}">
+        <script type="text/javascript" th:src="@{/js/datatables.min.js}"></script>
+        
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		<div class="card bg-light mb-3 col-sm-10 px-0 mx-auto">
+			<div class="card-header">
+				<h3 class="card-title text-success">Listado de Materias de la Facultad</h3>
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			</div>
+			<div class="mt-2 ml-2">
+				<a class="btn btn-success">
+					<i class="fa fa-plus mr-2" style="font-size:20px;color:white"></i> Nueva Materia
+				</a>
+			</div>
+			<div class="card-body" style="overflow-x:scroll">
+				<table id="tablaMaterias" class="table table-sm">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Departamento</th>
+							<th>Accion</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="materia: ${materias}">
+							
+							<td>
+								<a th:href="@{/materia/editar}+'/'+${materia.id}" th:text="${materia.nombre}" ></a>
+							</td>
+							
+							<td th:text="${materia.departamento!=null}?${materia.departamento.nombre} :'no establecido' "></td>
+							
+							<td>
+								<button 
+                                    type="button" 
+                                    class="btn py-1 btn-light" 
+                                    title="Eliminar"
+                                    th:onclick="' confirmAction(\' ' + ${materia.id} + ' \') ' "
+                                    data-toggle="modal" 
+                                    data-target="#eliminarModal">
+                                    <i class='fas fa-trash-alt text-danger'></i>
+                                </button>
+								
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>		
+	</div>
+
+	<div th:insert="/materia/confirm-delete-modal.html" th:remove="tag"></div>
+	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
+	<script type="text/javascript" th:src="@{/js/util/listaMateriasEliminarBajaModal.js}"></script>
+</body>
+</html>
