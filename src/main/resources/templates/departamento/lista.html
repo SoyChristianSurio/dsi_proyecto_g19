@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Lista de Departamentos</title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+    
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		<div class="card bg-light mb-3 col-sm-10 px-0">
+			<div class="card-header">
+				<h3 class="card-title text-success">Listado de Departamentos</h3>
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			</div>
+			<div class="mt-2 ml-2">
+				<button
+                    type="button" 
+                    class="btn btn-success" 
+                    title="Agregar Departamento"
+                    data-toggle="modal" 
+                    data-target="#agregarModal">
+                    <i class='fa fa-plus mr-2 text-withe'></i>
+                    Nuevo Departamento
+                </button>
+			</div>
+			<div class="card-body" style="overflow-x:scroll">
+				<table id="tablaUsuarios" class="table table-sm">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Jefatura</th>
+							<th>Accion</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="departamento: ${departamentos}">
+							
+							<td>
+								<a th:href="@{/departamento/editar}+'/'+${departamento.id}" th:text="${departamento.nombre}" tittle="Editar"></a>
+							</td>
+							<td>
+								<a th:if="${departamento.jefatura}==null" 
+									th:href="@{/departamento/jefatura/asignar/}+${departamento.id}" 
+									th:text="'Jefatura no establecida'"
+									tittle="Editar Jefatura"></a>
+								<a th:if="${departamento.jefatura}!=null" 
+									th:href="@{/departamento/jefatura/editar/}+${departamento.id}" 
+									th:text="${departamento.jefatura.jefe.username}"
+									tittle="Establecer Jefatura"></a>
+							</td>
+							
+							<td>
+<!-- 								<button  -->
+<!--                                     type="button"  -->
+<!--                                     th:class="'btn btn-light'" -->
+<!--                                     th:title="${usuario.activo}?'Dar de Baja':'Activar' " -->
+<!--                                     th:onclick="'confirmAction(\'' + ${usuario.id} + '\',\'' + ${usuario.activo} + '\')' "  -->
+<!--                                     data-toggle="modal"  -->
+<!--                                     data-target="#bajaModal"> -->
+<!--                                     <i th:class="${usuario.activo}? 'fas fa-arrow-circle-down text-warning' : 'fas fa-arrow-circle-up text-primary'" style="font-size:21px"></i> -->
+<!--                                 </button> -->
+<!-- 								<button  -->
+<!--                                     type="button"  -->
+<!--                                     class="btn btn-light"  -->
+<!--                                     title="Eliminar" -->
+<!--                                     th:onclick="'confirmAction(\'' + ${usuario.id} + '\',\'' + ${usuario.activo} + '\')' " -->
+<!--                                     data-toggle="modal"  -->
+<!--                                     data-target="#eliminarModal"> -->
+<!--                                     <i class='fas fa-trash-alt text-danger'></i> -->
+<!--                                 </button> -->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>		
+	</div>
+	
+
+	<div th:insert="departamento/agregar-modal.html" th:remove="tag"></div>
+	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
+	<script type="text/javascript" th:src="@{/js/util/listaUsuariosEliminarBajaModal.js}"></script>
+ 	<script th:if="${error}!=null"> 
+ 	$(document).ready(function(){
+ 		  // Show the Modal on load
+ 		  $("#agregarModal").modal("show");
+		  
+ 		  });
+		
+	</script>
+	</body>
+</html>

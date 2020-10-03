@@ -1,0 +1,35 @@
+<input type="hidden" id="materiaIdHidden" name="materiaIdHidden" />
+
+<!-- #################### Modal Eliminar ##################################-->
+<div class="modal fade" id="agregarModal" tabindex="-1" role="dialog"
+	aria-labelledby="agregarModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<!---------------header---------------------->
+				<h5 class="modal-title" id="agregarModalTitle">Agregar Departamento</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="cerrar">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<form th:action="@{/departamento/agregar}" th:object="${nuevoDepartamento}" th:method="post"><!-- #### Formulario ### -->
+			<div class="modal-body">
+				<!------------------body----------------------->
+				<div class="form-group">
+					<label for="exampleInputEmail1">Ingrese el nombre del nuevo departamento:</label> 
+					<input type="text" class="form-control" th:field="*{nombre}">
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<!----------------footer--------------------->
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				<button type="submit" class="btn btn-success">Guardar</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

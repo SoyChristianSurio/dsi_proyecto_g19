@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Data;
+@Data
 @Entity
 @Table(name = "jefaturas")
 public class Jefatura implements Serializable {

@@ -4,22 +4,10 @@
 <meta charset="UTF-8" />
 <title th:text="${titulo}"></title>
 
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" -->
-<!-- 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" -->
-<!-- 	crossorigin="anonymous"> -->
-		<link rel="stylesheet" href="/css/bootstrap.min.css">
-        <script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
-        <script type="text/javascript" src="/js/popper.min.js"></script>
-        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-	    
-	    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
-        <script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
-        
-        <!--DataTables CSS-->
-        <link rel="stylesheet" href="/js/datatables.min.css">
-        <link rel="stylesheet" href="/js/DataTables-1.10.21/css/dataTables.bootstrap4.min.css">
-        <script type="text/javascript" src="/js/datatables.min.js"></script>
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+	
 </head>
 <body>
 
