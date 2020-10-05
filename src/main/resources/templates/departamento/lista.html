@@ -57,24 +57,16 @@
 							</td>
 							
 							<td>
-<!-- 								<button  -->
-<!--                                     type="button"  -->
-<!--                                     th:class="'btn btn-light'" -->
-<!--                                     th:title="${usuario.activo}?'Dar de Baja':'Activar' " -->
-<!--                                     th:onclick="'confirmAction(\'' + ${usuario.id} + '\',\'' + ${usuario.activo} + '\')' "  -->
-<!--                                     data-toggle="modal"  -->
-<!--                                     data-target="#bajaModal"> -->
-<!--                                     <i th:class="${usuario.activo}? 'fas fa-arrow-circle-down text-warning' : 'fas fa-arrow-circle-up text-primary'" style="font-size:21px"></i> -->
-<!--                                 </button> -->
-<!-- 								<button  -->
-<!--                                     type="button"  -->
-<!--                                     class="btn btn-light"  -->
-<!--                                     title="Eliminar" -->
-<!--                                     th:onclick="'confirmAction(\'' + ${usuario.id} + '\',\'' + ${usuario.activo} + '\')' " -->
-<!--                                     data-toggle="modal"  -->
-<!--                                     data-target="#eliminarModal"> -->
-<!--                                     <i class='fas fa-trash-alt text-danger'></i> -->
-<!--                                 </button> -->
+
+								<button 
+                                    type="button" 
+                                    class="btn btn-light" 
+                                    title="Eliminar"
+                                    th:onclick="'confirmAction(\'' + ${departamento.id} + '\')' "
+                                    data-toggle="modal" 
+                                    data-target="#eliminarModal">
+                                    <i class='fas fa-trash-alt text-danger'></i>
+                                </button>
 							</td>
 						</tr>
 					</tbody>
@@ -84,9 +76,10 @@
 	</div>
 	
 
+	<div th:insert="departamento/eliminar-modal.html" th:remove="tag"></div>
 	<div th:insert="departamento/agregar-modal.html" th:remove="tag"></div>
 	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
-	<script type="text/javascript" th:src="@{/js/util/listaUsuariosEliminarBajaModal.js}"></script>
+	<script type="text/javascript" th:src="@{/js/util/listaDepartamentosEliminarModal.js}"></script>
  	<script th:if="${error}!=null"> 
  	$(document).ready(function(){
  		  // Show the Modal on load

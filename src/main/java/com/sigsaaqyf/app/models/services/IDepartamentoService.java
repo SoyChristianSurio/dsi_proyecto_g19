@@ -9,5 +9,6 @@ public interface IDepartamentoService {
 	public List<Departamento> findAll();
 	public void save(Departamento d);
 	public Departamento findById(Long id);
+	public void eliminar(Long id);
 	
 }

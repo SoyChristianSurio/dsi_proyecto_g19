@@ -30,4 +30,10 @@ public class DepartamentoServiceImpl implements IDepartamentoService {
 		return departamentoDao.findById(id).orElse(null);
 	}
 
+	@Override
+	public void eliminar(Long id) {
+		departamentoDao.deleteById(id);
+		
+	}
+
 }

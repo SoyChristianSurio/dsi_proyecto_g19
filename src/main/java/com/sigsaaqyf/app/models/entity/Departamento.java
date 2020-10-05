@@ -28,10 +28,10 @@ public class Departamento implements Serializable {
 	@NotBlank(message = "debe escribir un nombre")
 	private String nombre;
 //---------------------------------------------------------
-	@OneToMany(mappedBy = "departamento",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "departamento",fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private List<Materia> materias;
 //---------------------------------------------------------	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY,orphanRemoval = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST} )
 	private Jefatura jefatura;
 //---------------------------------------------------------	
 	private static final long serialVersionUID = 1L;

@@ -64,17 +64,31 @@ public class DepartamentoController {
 	public String editar(@Valid @ModelAttribute("departamento")Departamento departamento, BindingResult result, Model model, RedirectAttributes flash) {
 		if(result.hasErrors()) {
 			Departamento departament = departamentoService.findById(departamento.getId());
+			//información que no es parte del formulario
 			model.addAttribute("departamentoNombre", departament.getNombre() );
 			if(departament.getJefatura()!=null) model.addAttribute("departamentoJefatura", departament.getJefatura().getJefe().getUsername() );
 			model.addAttribute("departamentoMaterias", departament.getMaterias() );
-			System.out.println(departamento.getId());
-			System.out.println(departamento.getNombre());
-			System.out.println(departamento.getJefatura());
-			System.out.println(departamento.getMaterias().toString());
 			return "/departamento/editar";
 		}
 		departamentoService.save(departamento);
 		flash.addFlashAttribute("success",	"Se ha editado el nombre del departamento");
+		
+		return "redirect:/departamento/lista";
+	}
+	
+	@GetMapping("/eliminar/{id}")//------------------------------------------ ################## ELIMINAR DEPARTAMENTO #################
+	public String eliminar(@PathVariable(name = "id")Long id, Model model, RedirectAttributes flash) {
+		try {
+			departamentoService.eliminar(id);
+			flash.addFlashAttribute("warning",	"Se ha eliminado el departamento");
+		} catch (Exception e) {
+			if(e.getMessage().contains("org.hibernate.exception.ConstraintViolationException")) {
+				flash.addFlashAttribute("error", "No se puede eliminar, departamento está asociado a otros datos");
+			}
+			else flash.addFlashAttribute("error", "error inesperado");
+			
+		}
+		
 		
 		return "redirect:/departamento/lista";
 	}
