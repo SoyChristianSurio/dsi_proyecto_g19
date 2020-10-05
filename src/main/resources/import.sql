@@ -17,10 +17,11 @@ Insert into departamentos (nombre) values("Ver el pasto crecer");
 Insert into materias (codigo, nombre) values("mat-115","matematicas 1");
 Insert into materias (codigo, nombre) values("mat-215","matematicas 2");
 Insert into materias (codigo, nombre) values("mat-315","matematicas 3");
-Insert into materias (codigo, nombre) values("mat-115","matematicas 1");
+Insert into materias (codigo, nombre) values("mat-115","matematicas 4");
 Insert into materias (codigo, nombre) values("slc-115","sacudirse la camisa 1");
 Insert into materias (codigo, nombre) values("pcv-115","pues, como te va? 1");
 
+Insert into jefaturas (departamento_id, jefe_id) values(3,1);
 
-
+Update departamentos set jefatura_id=1 where (id=3);
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Editar Departamento</title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+    
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		<form th:object="${departamento}" th:action="@{/departamento/editar}"	th:method="post"> <!-- ####################### Form ############## -->
+		<input type="hidden" th:field="*{id}">
+		<div class="card bg-light mb-3 col-sm-10 px-0">
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD-------------- -->
+			<div class="card-header">
+				<h3 class="card-title text-success">Editar departamento</h3>
+				<h5 th:text="${departamentoNombre}"></h5>
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			</div>
+			
+				<a th:if="${departamento}==null" class="btn btn-dark " th:href="@{/departamento/lista}">Regresar</a>
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD BODY--------- -->	
+			<div th:if="${departamento}!=null" class="card-body" style="overflow-x:scroll">
+				
+					
+					
+					<!-- --------------------------------------------------------------------- input nombre -->
+					<div class="form-group row mt-3">
+						<label class="col-form-label col-sm-2">Nombre</label>
+						<div class="col-sm-6 px-0">
+							<input type="text" th:field="*{nombre}" class="form-control form-control" />
+							<div class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+						</div>
+						<button class="btn btn-primary ml-3" type="submit">
+							Guardar
+						</button>
+						
+					</div>
+					<!-- --------------------------------------------------------------------- link para editar jefatura -->
+					<div class="form-group row">
+						<label class="col-form-label col-sm-2">Jefatura</label>
+						<div class="">
+							<a th:if="${departamentoJefatura}==null" 
+									th:href="@{/departamento/jefatura/asignar/}+${departamento.id}" 
+									th:text="'Jefatura no establecida'"
+									tittle="Editar Jefatura"></a>
+							<a th:if="${departamentoJefatura}!=null" 
+								th:href="@{/departamento/jefatura/editar/}+${departamento.id}" 
+								th:text="${departamentoJefatura}"
+								tittle="Establecer Jefatura"></a>
+						</div>
+					</div>
+					
+					<h3 th:text="'Materias asociadas'"></h3>
+					<h6 class="text-secondary" th:if="${departamentoMaterias.isEmpty()}" th:text="'Sin materias asociadas'"></h6>
+					<div class="list-group">
+						<a  th:each="materia : ${departamentoMaterias}"
+							th:href="@{/materia/editar/}+${materia.id}"
+							th:text="${materia.nombre}" 
+							class="list-group-item list-group-item-action"></a> 
+					</div>
+					<a class="btn btn-dark " th:href="@{/departamento/lista}">Regresar</a>
+				
+			</div>
+			<ul th:if="${#fields.hasErrors('*')}">
+				<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+			</ul>
+		</div>	<!-- --------------------------------------------------------------------------------------------------------------------END CARD--------- -->	
+	</form>
+	</div>
+ 	
+	</body>
+</html>

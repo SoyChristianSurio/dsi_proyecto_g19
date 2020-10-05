@@ -43,7 +43,7 @@
 						<tr th:each="departamento: ${departamentos}">
 							
 							<td>
-								<a th:href="@{/departamento/editar}+'/'+${departamento.id}" th:text="${departamento.nombre}" tittle="Editar"></a>
+								<a th:href="@{/departamento/editar/}+${departamento.id}" th:text="${departamento.nombre}" tittle="Editar"></a>
 							</td>
 							<td>
 								<a th:if="${departamento.jefatura}==null" 

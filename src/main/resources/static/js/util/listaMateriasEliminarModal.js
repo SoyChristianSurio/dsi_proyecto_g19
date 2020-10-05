@@ -5,5 +5,5 @@ function confirmAction(id) {
 
 function deleteMateria() {
     var id = document.getElementById("materiaIdHidden").value;
-    window.location = "/usuario/eliminar/"+ id;
+    window.location = "/materia/eliminar/"+ id;
     }

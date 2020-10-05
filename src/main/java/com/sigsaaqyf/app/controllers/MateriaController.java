@@ -15,7 +15,7 @@ public class MateriaController {
 	@Autowired
 	IMateriaService materiaService;
 	
-	@GetMapping("/")
+	@GetMapping("/lista")
 	public String lista(Model model) {
 		model.addAttribute("materias",materiaService.findAll() );
 		return "/materia/lista";

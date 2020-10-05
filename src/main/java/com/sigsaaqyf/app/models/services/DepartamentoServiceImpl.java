@@ -25,4 +25,9 @@ public class DepartamentoServiceImpl implements IDepartamentoService {
 		
 	}
 
+	@Override
+	public Departamento findById(Long id) {
+		return departamentoDao.findById(id).orElse(null);
+	}
+
 }

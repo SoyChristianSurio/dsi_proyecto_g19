@@ -25,7 +25,7 @@ public class Departamento implements Serializable {
 	private Long id;
 //---------------------------------------------------------
 	@Column
-	@NotBlank
+	@NotBlank(message = "debe escribir un nombre")
 	private String nombre;
 //---------------------------------------------------------
 	@OneToMany(mappedBy = "departamento",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
