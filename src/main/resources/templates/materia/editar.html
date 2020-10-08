@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Lista de usuarios</title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+        
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		<div class="card bg-light mb-3 col-sm-10 px-0 mx-auto">
+			<div class="card-header">
+				<h3 class="card-title text-success">Editar Materia</h3>
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			</div>
+			<form id="form_editar" th:action="@{/materia/editar}" th:method="post" th:object="${materia}">
+			<div class="card-body" style="overflow-x:scroll">
+						<input type="hidden" th:field="*{id}"/>
+						<div class="form-group row my-0" >
+							<div class="col-sm-2 py-0">
+								<label class="col-form-label">Código*</label></div>
+							<div class="col-sm-10 py-auto">
+							<div class="col-sm-10 pl-0">
+								<input th:field="*{codigo}" type="text" class="form-control-sm form-control">
+							</div>
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></small>
+							</div>
+						</div>
+						
+						<div class="form-group row my-0">
+							<div class="col-sm-2">
+								<label class="col-form-label">Nombre*</label></div>
+							<div class="col-sm-10 py-auto">
+								<div class="col-sm-10 pl-0">
+									<input th:field="*{nombre}" type="text" class="form-control-sm form-control">
+								</div>
+								<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<div class="col-sm-2">
+								<label class="col-form-label">Departamento</label></div>
+							<div class="col-sm-10 py-auto">
+							<div class="col-sm-10 pl-0">
+								<select class="form-control form-control-sm" th:field="*{departamentoid}">
+									<option th:text="'seleccionar departamento'" value="0"></option>
+									<option 
+										th:each="departamento : ${departamentos}" 
+										th:value="${departamento.id}" 
+										th:text="${departamento.nombre}"></option>
+								</select>
+							</div>
+							</div>
+						</div>
+						
+						<button 
+							type="submit" class="btn btn-outline-success"
+							onclick="document.getElementById('form_editar').formSubmit()">Actualizar</button>
+					<a class="btn btn-dark" th:href="@{/materia/lista}">Cancelar</a>
+					
+
+				</div>
+			</form>
+		</div>		
+	</div>
+
+	<div th:insert="/materia/confirm-delete-modal.html" th:remove="tag"></div>
+	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
+	<script type="text/javascript" th:src="@{/js/util/listaMateriasEliminarModal.js}"></script>
+</body>
+</html>

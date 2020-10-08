@@ -80,7 +80,7 @@
 	<div th:insert="departamento/agregar-modal.html" th:remove="tag"></div>
 	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
 	<script type="text/javascript" th:src="@{/js/util/listaDepartamentosEliminarModal.js}"></script>
- 	<script th:if="${error}!=null"> 
+ 	<script th:if="${errorEdit}!=null"> 
  	$(document).ready(function(){
  		  // Show the Modal on load
  		  $("#agregarModal").modal("show");

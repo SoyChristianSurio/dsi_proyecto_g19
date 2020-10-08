@@ -28,6 +28,7 @@
 				<table id="tablaMaterias" class="table table-sm">
 					<thead>
 						<tr>
+							<th>Codigo</th>
 							<th>Nombre</th>
 							<th>Departamento</th>
 							<th>Accion</th>
@@ -36,8 +37,10 @@
 					<tbody>
 						<tr th:each="materia: ${materias}">
 							
+							<td th:text="${materia.codigo}"></td>
+							
 							<td>
-								<a th:href="@{/materia/editar}+'/'+${materia.id}" th:text="${materia.nombre}" ></a>
+								<a th:href="@{/materia/editar/}+${materia.id}" th:text="${materia.nombre}" ></a>
 							</td>
 							
 							<td th:text="${materia.departamento!=null}?${materia.departamento.nombre} :'no establecido' "></td>

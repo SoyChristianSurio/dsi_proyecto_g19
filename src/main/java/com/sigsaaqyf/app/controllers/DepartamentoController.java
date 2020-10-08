@@ -36,6 +36,7 @@ public class DepartamentoController {
 				BindingResult result, Model model, RedirectAttributes flash) {
 		if(result.hasErrors()) {
 			model.addAttribute("error", "Departamento no guardado");
+			model.addAttribute("errorEdit", "hola");
 			model.addAttribute("departamentos", departamentoService.findAll());
 			return "/departamento/lista";
 		}
