@@ -8,20 +8,19 @@ Insert into usuarios (username, p_Nombre, s_Nombre, p_Apellido, s_Apellido, emai
 Insert into usuarios (username, p_Nombre, s_Nombre, p_Apellido, s_Apellido, email, estudiante, activo) values('docente2','Docente','Dos','Clase','Clara','docente2@ues.edu.sv',0,1);
 Insert into usuarios (username, p_Nombre, s_Nombre, p_Apellido, s_Apellido, email, estudiante, activo) values('docente3','Docente','Tres','Clase','Clara','docente3@ues.edu.sv',0,1);
 
-Insert into departamentos (nombre) values("Comedia");
-Insert into departamentos (nombre) values("ver el cielo");
-Insert into departamentos (nombre) values("ciencias básicas");
-Insert into departamentos (nombre) values("hablantes de esto y lo otro");
-Insert into departamentos (nombre) values("Ver el pasto crecer");
+Insert into departamentos (nombre) values("Farmacia");
+Insert into departamentos (nombre) values("Quimica");
+Insert into departamentos (nombre) values("Ciencias Básicas");
+Insert into departamentos (nombre) values("Investigación");
+Insert into departamentos (nombre) values("Física");
 
 Insert into materias (codigo, nombre) values("mat-115","matematicas 1");
 Insert into materias (codigo, nombre) values("mat-215","matematicas 2");
 Insert into materias (codigo, nombre) values("mat-315","matematicas 3");
 Insert into materias (codigo, nombre) values("mat-115","matematicas 4");
-Insert into materias (codigo, nombre) values("slc-115","sacudirse la camisa 1");
-Insert into materias (codigo, nombre) values("pcv-115","pues, como te va? 1");
+Insert into materias (codigo, nombre) values("biq-115","Bioquímica");
+Insert into materias (codigo, nombre) values("fiq-115","Fisioquímica");
 
 Insert into jefaturas (fecha_registro,departamento_id, jefe_id) values('2020-10-01',3,1);
-
 Update departamentos set jefatura_id=1 where (id=3);
 
