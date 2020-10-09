@@ -6,9 +6,9 @@ public class MateriaEditar {
 	
 	private Long id;
 	
-	@NotBlank(message = "codigo reuerido")
+	@NotBlank(message = "codigo requerido")
 	private String codigo;
-	@NotBlank(message = "nombre reuerido")
+	@NotBlank(message = "nombre requerido")
 	private String nombre;
 	
 	private Long departamentoid;

@@ -64,6 +64,11 @@ public class Usuario implements Serializable {
 		this.fechaRegistro=new Date();
 	}
 	
+	public String getNombreCompleto() {
+		if(this.sNombre==null) return this.pNombre.concat(" ").concat(this.pApellido).concat(" ").concat(this.sApellido);
+		else return this.pNombre.concat(" ").concat(sNombre).concat(" ").concat(this.pApellido).concat(" ").concat(this.sApellido);
+	} 
+	
 	public Long getId() {
 		return id;
 	}

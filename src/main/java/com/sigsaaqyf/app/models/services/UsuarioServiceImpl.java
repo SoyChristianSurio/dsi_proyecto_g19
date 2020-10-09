@@ -95,6 +95,20 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		}
 		return uea;
 	}
+	@Override
+	public List<Usuario> findAllDocentes() {
+		
+		return usuarioDao.findAllByEstudiante(false);
+	}
+	@Override
+	public String getNombreCompleto(Long id) {
+		
+		return "no implementado";
+	}
+	@Override
+	public List<Usuario> findAllDocentesActivos() {
+		return usuarioDao.findAllByEstudianteFalseAndActivoTrue();
+	}
 	
 	
 	

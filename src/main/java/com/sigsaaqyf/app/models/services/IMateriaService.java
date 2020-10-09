@@ -10,4 +10,5 @@ public interface IMateriaService {
 	public List<Materia> findAll();
 	public MateriaEditar findByIdEdit(Long id);
 	public void save(MateriaEditar me);
+	public void deleteById(Long id);
 }

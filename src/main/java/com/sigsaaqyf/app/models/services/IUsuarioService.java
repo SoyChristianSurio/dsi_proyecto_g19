@@ -17,7 +17,9 @@ public interface IUsuarioService {
 	public boolean usernameDisponible(String username);
 	public Usuario findById(Long id);
 	public UsuarioEditarAdmin usuarioEditarAdmin(Long id);
-	
+	public List<Usuario> findAllDocentes();
+	public List<Usuario> findAllDocentesActivos();
+	public String getNombreCompleto(Long id);
 	
 	
 }

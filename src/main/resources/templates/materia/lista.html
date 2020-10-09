@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
-<title>Lista de usuarios</title>
+<title>Lista de materias</title>
 
 	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
 	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
-	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+ 	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
         
 </head>
 <body>
@@ -20,12 +20,12 @@
 				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
 			</div>
 			<div class="mt-2 ml-2">
-				<a class="btn btn-success">
+				<a class="btn btn-success" th:href="@{/materia/agregar}">
 					<i class="fa fa-plus mr-2" style="font-size:20px;color:white"></i> Nueva Materia
 				</a>
 			</div>
 			<div class="card-body" style="overflow-x:scroll">
-				<table id="tablaMaterias" class="table table-sm">
+				<table id="tablaUsuarios" class="table table-sm">
 					<thead>
 						<tr>
 							<th>Codigo</th>
@@ -43,14 +43,15 @@
 								<a th:href="@{/materia/editar/}+${materia.id}" th:text="${materia.nombre}" ></a>
 							</td>
 							
-							<td th:text="${materia.departamento!=null}?${materia.departamento.nombre} :'no establecido' "></td>
+							<td th:text="${materia.departamento!=null}?${materia.departamento.nombre} :'no establecido' "
+								th:class="${materia.departamento!=null}?'text-success' : 'text-danger'"></td>
 							
 							<td>
 								<button 
                                     type="button" 
                                     class="btn py-1 btn-light" 
                                     title="Eliminar"
-                                    th:onclick="' confirmAction(\' ' + ${materia.id} + ' \') ' "
+                                    th:onclick="' confirmAction(\'' + ${materia.id} + '\',\''+'\') ' "
                                     data-toggle="modal" 
                                     data-target="#eliminarModal">
                                     <i class='fas fa-trash-alt text-danger'></i>

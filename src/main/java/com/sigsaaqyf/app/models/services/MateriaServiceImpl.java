@@ -54,6 +54,12 @@ public class MateriaServiceImpl implements IMateriaService {
 		materiaDao.save(m);
 		
 	}
+
+	@Override
+	public void deleteById(Long id) {
+		materiaDao.deleteById(id);
+		
+	}
 	
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -17,8 +18,7 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Data;
-@Data
+
 @Entity
 @Table(name = "jefaturas")
 public class Jefatura implements Serializable {
@@ -39,7 +39,7 @@ public class Jefatura implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	private Usuario jefe;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Departamento departamento;
 	
 	private static final long serialVersionUID = 1L;
@@ -79,6 +79,14 @@ public class Jefatura implements Serializable {
 
 	public void setJefe(Usuario jefe) {
 		this.jefe = jefe;
+	}
+
+	public Departamento getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(Departamento departamento) {
+		this.departamento = departamento;
 	}
 	
 	

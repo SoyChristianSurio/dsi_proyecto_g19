@@ -6,7 +6,7 @@
 
 	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
 	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
-	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+<!-- 	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div> -->
         
 </head>
 <body>
@@ -16,10 +16,10 @@
 	<div class="container py-2">
 		<div class="card bg-light mb-3 col-sm-10 px-0 mx-auto">
 			<div class="card-header">
-				<h3 class="card-title text-success">Editar Materia</h3>
+				<h3 class="card-title text-success" th:text="${myh3}">Editar Materia</h3>
 				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
 			</div>
-			<form id="form_editar" th:action="@{/materia/editar}" th:method="post" th:object="${materia}">
+			<form id="form_editar" th:action="${editar}?@{/materia/editar}:@{/materia/agregar}" th:method="post" th:object="${materia}">
 			<div class="card-body" style="overflow-x:scroll">
 						<input type="hidden" th:field="*{id}"/>
 						<div class="form-group row my-0" >
@@ -29,7 +29,7 @@
 							<div class="col-sm-10 pl-0">
 								<input th:field="*{codigo}" type="text" class="form-control-sm form-control">
 							</div>
-							<small class="form-text text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></small>
+							<small class="form-text text-danger mb-3 mt-0" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></small>
 							</div>
 						</div>
 						
@@ -40,7 +40,7 @@
 								<div class="col-sm-10 pl-0">
 									<input th:field="*{nombre}" type="text" class="form-control-sm form-control">
 								</div>
-								<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+								<small class="form-text text-danger mb-3 mt-0" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
 							</div>
 						</div>
 
@@ -50,7 +50,7 @@
 							<div class="col-sm-10 py-auto">
 							<div class="col-sm-10 pl-0">
 								<select class="form-control form-control-sm" th:field="*{departamentoid}">
-									<option th:text="'seleccionar departamento'" value="0"></option>
+									<option class="text-danger" th:text="'sin departamento'" value="0"></option>
 									<option 
 										th:each="departamento : ${departamentos}" 
 										th:value="${departamento.id}" 
@@ -71,8 +71,8 @@
 		</div>		
 	</div>
 
-	<div th:insert="/materia/confirm-delete-modal.html" th:remove="tag"></div>
-	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
-	<script type="text/javascript" th:src="@{/js/util/listaMateriasEliminarModal.js}"></script>
+<!-- 	<div th:insert="/materia/confirm-delete-modal.html" th:remove="tag"></div>  -->
+<!-- 	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script> -->
+<!-- 	<script type="text/javascript" th:src="@{/js/util/listaMateriasEliminarModal.js}"></script> -->
 </body>
 </html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Editar Jefatura</title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+    
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		<form th:object="${departamento}" th:action="@{/departamento/editar}" th:method="post"> <!-- ####################### Form ############## -->
+		<input type="hidden" th:field="*{id}">
+		<div class="card bg-light mb-3 col-sm-10 px-0">
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD-------------- -->
+			<div class="card-header">
+				<a 	class="btn btn-sm btn-info float-right" 
+					data-toggle="collapse" href="#collapseExample" 
+					role="button" aria-expanded="false" 
+					aria-controls="collapseExample">
+	    		info
+				</a>
+				<h3 class="card-title text-success">Editar jefatura del departamento</h3>
+				
+				<h5 th:text="${departamento.nombre}"></h5>
+				
+				<!-- ///////////////////////////////////////////////////////////////////// MENSAJE INFO //////////////////// -->
+				                                                                                                   <!-- ////  -->
+				                                                                                                   <!-- ////  -->
+				<div class="collapse mt-1 mb-3" id="collapseExample">
+					<div class="card card-body text-muted py-0" th:if="${departamento.jefatura!=null}">
+						<p class="text-muted" >
+						    Al pulsar <code class="text-dark bg-warning px-1">terminar jefatura</code>, se marcará la jefatura 
+						    actual como terminada con la hora y fecha actual y dejará al departamento sin jefe.
+						</p>
+						<p class="text-muted">
+						    Al pulsar <code class="text-light bg-success px-1">asignar como jefe</code>, se marcará la jefatura 
+						    actual como terminada con la hora y fecha actual y se asignará al docente como el nuevo jefe.
+						</p>
+					</div>
+					<div class="card card-body text-muted py-0" th:if="${departamento.jefatura==null}">
+						<p class="text-muted">
+					    	Al pulsar <code class="text-light bg-success px-1">asignar como jefe</code>
+					    	 se asignará al docente como el nuevo jefe del departamento.
+						</p>
+					</div>                                                                                          <!-- ////  -->
+				</div>                                                                                              <!-- ////  -->
+				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			</div>
+			
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD BODY--------- -->	
+			<div class="card-body" >
+				
+					<div th:if="${departamento.jefatura==null}">
+					
+					</div>	
+					<div >
+						<div th:if="${departamento.jefatura!=null}" class="text-muted">
+							El jefe actual es 
+							<span class="text-success font-weight-bold" th:text="' '+${departamento.jefatura.jefe.getNombreCompleto()}+' '"></span>
+							desde la fecha: 
+							<span th:text="${#calendars.format(departamento.jefatura.fechaRegistro, 'dd-MM-yyyy HH:mm')}"></span>
+							<br>
+							<a class="btn btn-sm btn-warning" th:href="@{'/departamento/jefatura/terminar/'+${departamento.id}}">Terminar jefatura</a>
+						</div>
+						<hr>
+						
+					</div>
+					<!-- //////////////////////////////////////////////// Tabla de seleccion de docentes activos /////////////////////////// -->
+					<div class="card border-dark mb-3 p-4" >                                                                                                          <!-- ////  -->
+						<table class="table table-sm" id="tablaUsuarios" style="overflow-x:scroll">                                                          <!-- ////  -->
+							<thead>
+								<tr>
+									<th>Docente</th>
+									<th>Acción</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="docente: ${docentes}">
+									<td th:text="${docente.getNombreCompleto()}"></td>
+									<td>
+										<a class="btn btn-success btn-sm" th:href="@{'/departamento/jefatura/asignar/'+${departamento.id}+'/'+${docente.id}}">
+											<i class="fas fa-link fa-lg"></i> Asignar como jefe
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>                                                                                                  <!-- ////  -->
+					</div>                                                                                                        <!-- ////  -->
+					<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////  -->
+					<a class="btn btn-dark " th:href="@{/departamento/lista}">Regresar</a>
+				
+			</div>
+
+		</div>	<!-- --------------------------------------------------------------------------------------------------------------------END CARD--------- -->	
+	</form>
+	</div>
+ 	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
+	</body>
+</html>

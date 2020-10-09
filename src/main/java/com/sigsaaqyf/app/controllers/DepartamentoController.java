@@ -1,6 +1,9 @@
 package com.sigsaaqyf.app.controllers;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sigsaaqyf.app.models.entity.Departamento;
+import com.sigsaaqyf.app.models.entity.Jefatura;
 import com.sigsaaqyf.app.models.services.IDepartamentoService;
+import com.sigsaaqyf.app.models.services.IJefaturaService;
+import com.sigsaaqyf.app.models.services.IUsuarioService;
 
 @Controller
 @RequestMapping("/departamento")
@@ -23,6 +29,10 @@ public class DepartamentoController {
 	
 	@Autowired
 	IDepartamentoService departamentoService;
+	@Autowired
+	IJefaturaService jefaturaService;
+	@Autowired
+	IUsuarioService usuarioService;
 	
 	@GetMapping("/lista")//------------------------------------------ ################## LISTAR DEPARTAMENTOS #################
 	public String listar(Model model) {
@@ -85,12 +95,44 @@ public class DepartamentoController {
 		} catch (Exception e) {
 			if(e.getMessage().contains("org.hibernate.exception.ConstraintViolationException")) {
 				flash.addFlashAttribute("error", "No se puede eliminar, departamento está asociado a otros datos");
-			}
-			else flash.addFlashAttribute("error", "error inesperado");
-			
+			}else flash.addFlashAttribute("error", "error inesperado");
 		}
-		
-		
 		return "redirect:/departamento/lista";
 	}
+	
+	@GetMapping("/jefatura/editar/{id}")
+	public String editarJefaturaG(@PathVariable("id")Long id, Model model) {
+		Departamento d = departamentoService.findById(id);
+		model.addAttribute("jeatura", new Jefatura());
+		model.addAttribute("docentes", usuarioService.findAllDocentesActivos());
+		model.addAttribute("departamento", d);
+		
+		return "/departamento/editar-jefatura";
+	}
+	
+	@GetMapping("/jefatura/terminar/{id}")
+	public String terminarJefatura(@PathVariable(name = "id")Long id, Model model, RedirectAttributes flash) {
+		Jefatura jt = departamentoService.terminarJefatura(id);
+		SimpleDateFormat f = new SimpleDateFormat("dd/MMM/yyyy HH:mm");
+		flash.addFlashAttribute("info",	"La jefatura de "+jt.getJefe().getNombreCompleto()
+										+" inició en "+f.format(jt.getFechaRegistro())
+										+" y finalizó en "+f.format(jt.getFechaFin())
+										+". El departamento: "+jt.getDepartamento().getNombre()
+										+", se encuentra sin jefatura. ");
+		return "redirect:/departamento/lista";
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

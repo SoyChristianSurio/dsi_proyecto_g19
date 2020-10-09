@@ -47,7 +47,7 @@
 							</td>
 							<td>
 								<a th:if="${departamento.jefatura}==null" 
-									th:href="@{/departamento/jefatura/asignar/}+${departamento.id}" 
+									th:href="@{/departamento/jefatura/editar/}+${departamento.id}" 
 									th:text="'Jefatura no establecida'"
 									tittle="Editar Jefatura"></a>
 								<a th:if="${departamento.jefatura}!=null" 
