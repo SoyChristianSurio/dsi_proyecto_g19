@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin")
+
 public class AdminController {
 
-	@GetMapping("/home")
-	public String homeG(@ModelAttribute("username")String username, Model model) {
-		model.addAttribute("usuario", username);
-		return "admin/home";
+	@GetMapping("/")
+	public String homeG(Model model) {
+		
+		return "/usuario/registro";	
 	}
 	
 	@PostMapping("/home")
