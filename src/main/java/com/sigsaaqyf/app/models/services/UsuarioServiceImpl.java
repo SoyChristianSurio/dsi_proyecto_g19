@@ -18,7 +18,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	IUsuarioDao usuarioDao;
 	
 	public String primeraMayuscula(String s) {
-		if(s.isBlank()) {
+		if(s.isEmpty()) {
 			return s;
 		}
 		return s.substring(0, 1).toUpperCase()+s.substring(1).toLowerCase();
