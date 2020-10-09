@@ -122,6 +122,35 @@ public class DepartamentoController {
 		return "redirect:/departamento/lista";
 	}
 	
+	@GetMapping("/jefatura/asignar/{idd}/{idu}")
+	public String asignarJefatura(@PathVariable(name = "idd")Long idDep, @PathVariable(name = "idu")Long idUsu, Model model, RedirectAttributes flash) {
+		SimpleDateFormat f = new SimpleDateFormat("dd/MMM/yyyy HH:mm");
+		Jefatura ja= departamentoService.findById(idDep).getJefatura();//--- guardar datos de jefatura antigua en "ja"
+		Jefatura jn = jefaturaService.nueva(idDep, idUsu);//---------------- guardar datos de jefatura nueva en "jn"
+		 
+		 System.out.println("--------");
+		 System.out.println(jn.getId());
+		 System.out.println(jn.getFechaRegistro());
+		 System.out.println(jn.getDepartamento().getNombre());
+		 System.out.println(jn.getJefe().getNombreCompleto());
+		
+		
+		if(ja != null) {
+			flash.addFlashAttribute("info",	"La jefatura de "+ja.getJefe().getNombreCompleto()
+					+"\ninició en "+ f.format(ja.getFechaRegistro())
+					+" y finalizó en "+f.format(ja.getFechaFin())
+					+"\n\nEl nuevo jefe del departamento: "+jn.getDepartamento().getNombre()
+					+", es "+ jn.getJefe().getNombreCompleto()+ ". inicio: "+ f.format(jn.getFechaRegistro())
+				);
+		}else {
+			flash.addFlashAttribute("info",	"El nuevo jefe del departamento: "+jn.getDepartamento().getNombre()
+				+", es "+ jn.getJefe().getNombreCompleto()+ ". inicio: "+ f.format(jn.getFechaRegistro()) );
+		}
+		
+		
+		return "redirect:/departamento/lista";
+	}
+	
 }
 
 

@@ -21,7 +21,7 @@ Insert into materias (codigo, nombre) values("mat-115","matematicas 4");
 Insert into materias (codigo, nombre) values("slc-115","sacudirse la camisa 1");
 Insert into materias (codigo, nombre) values("pcv-115","pues, como te va? 1");
 
-Insert into jefaturas (departamento_id, jefe_id) values(3,1);
+Insert into jefaturas (fecha_registro,departamento_id, jefe_id) values('2020-10-01',3,1);
 
 Update departamentos set jefatura_id=1 where (id=3);
 
