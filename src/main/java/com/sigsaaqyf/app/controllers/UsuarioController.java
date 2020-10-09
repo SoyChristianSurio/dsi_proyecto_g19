@@ -30,7 +30,7 @@ public class UsuarioController {
 	IUsuarioService usuarioService;
 	
 	//-----HANDLERS PARA EL REGISTRO DE USUARIOS----------------
-	@GetMapping("/registro")
+	@GetMapping({"/","/registro"})
 	public String registroG(Model model) {
 		UsuarioRegistro usuario = new UsuarioRegistro();
 		model.addAttribute("titulo", "Registro de Usuario");
