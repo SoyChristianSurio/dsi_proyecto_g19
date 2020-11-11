@@ -20,6 +20,7 @@ public interface IUsuarioService {
 	public List<Usuario> findAllDocentes();
 	public List<Usuario> findAllDocentesActivos();
 	public String getNombreCompleto(Long id);
+	public List<Usuario> findAllDocentesSinJefatura();
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.sigsaaqyf.app.models.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
 	@Autowired 
 	IUsuarioDao usuarioDao;
+	@Autowired
+	IDepartamentoService departamentoService;
 	
 	public String primeraMayuscula(String s) {
 		if(s.isBlank()) {
@@ -72,6 +75,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		Usuario u = usuarioDao.findById(id).orElse(null);
 		return u;
 	}
+	
 	@Override
 	public UsuarioEditarAdmin usuarioEditarAdmin(Long id) { //dado el id retorna un usuario con los campos necesarios para editarlo
 		
@@ -97,17 +101,30 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	}
 	@Override
 	public List<Usuario> findAllDocentes() {
-		
 		return usuarioDao.findAllByEstudiante(false);
 	}
+	
 	@Override
 	public String getNombreCompleto(Long id) {
-		
 		return "no implementado";
 	}
 	@Override
 	public List<Usuario> findAllDocentesActivos() {
 		return usuarioDao.findAllByEstudianteFalseAndActivoTrue();
+	}
+	@Override
+	public List<Usuario> findAllDocentesSinJefatura() {
+		List<Usuario> docentes = this.findAllDocentesActivos();
+		List<Usuario> jefes = departamentoService.findAllJefes();
+		List<Usuario> docentesSinJefatura = new ArrayList<Usuario>();
+		
+		for(Usuario u: docentes) {
+			if(!jefes.contains(u)) {
+				docentesSinJefatura.add(u);
+			}
+		}
+		
+		return docentesSinJefatura;
 	}
 	
 	

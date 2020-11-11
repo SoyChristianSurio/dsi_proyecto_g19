@@ -26,8 +26,10 @@ public class JefaturaServiceImpl implements IJefaturaService {
 		
 		Jefatura jefatura = new Jefatura();
 		Departamento dep  = departamentoService.findById(departamentoid);
-		dep.getJefatura().setFechaFin(new Date());
-		departamentoService.save(dep);
+		if(dep.getJefatura()!=null) {
+			dep.getJefatura().setFechaFin(new Date());
+			departamentoService.save(dep);
+		}
 		
 		jefatura.setDepartamento(dep);//---------------------------------- Asignar departamento 
 		jefatura.setJefe(usuarioService.findById(usuarioid));//----------- Asignar jefe

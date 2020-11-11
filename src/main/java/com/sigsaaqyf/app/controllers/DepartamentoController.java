@@ -2,7 +2,6 @@ package com.sigsaaqyf.app.controllers;
 
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.validation.Valid;
 
@@ -19,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sigsaaqyf.app.models.entity.Departamento;
 import com.sigsaaqyf.app.models.entity.Jefatura;
+import com.sigsaaqyf.app.models.entity.Usuario;
 import com.sigsaaqyf.app.models.services.IDepartamentoService;
 import com.sigsaaqyf.app.models.services.IJefaturaService;
 import com.sigsaaqyf.app.models.services.IUsuarioService;
@@ -38,6 +38,16 @@ public class DepartamentoController {
 	public String listar(Model model) {
 		model.addAttribute("departamentos", departamentoService.findAll());
 		model.addAttribute("nuevoDepartamento", new Departamento());
+		
+
+		for(Usuario usu: departamentoService.findAllJefes()) {         //-------
+			System.out.println(usu.getUsername());                     //-----
+		}                                                              //---
+		System.out.println("--------------"); 						   //--- PRUEBAS
+		for(Usuario usu: usuarioService.findAllDocentesSinJefatura()) {//---
+			System.out.println(usu.getUsername());					   //-----
+		}															   //-------
+		
 		return "/departamento/lista";
 	}
 	
@@ -104,7 +114,7 @@ public class DepartamentoController {
 	public String editarJefaturaG(@PathVariable("id")Long id, Model model) {
 		Departamento d = departamentoService.findById(id);
 		model.addAttribute("jeatura", new Jefatura());
-		model.addAttribute("docentes", usuarioService.findAllDocentesActivos());
+		model.addAttribute("docentes", usuarioService.findAllDocentesSinJefatura());
 		model.addAttribute("departamento", d);
 		
 		return "/departamento/editar-jefatura";
@@ -123,16 +133,14 @@ public class DepartamentoController {
 	}
 	
 	@GetMapping("/jefatura/asignar/{idd}/{idu}")
-	public String asignarJefatura(@PathVariable(name = "idd")Long idDep, @PathVariable(name = "idu")Long idUsu, Model model, RedirectAttributes flash) {
-		SimpleDateFormat f = new SimpleDateFormat("dd/MMM/yyyy HH:mm");
-		Jefatura ja= departamentoService.findById(idDep).getJefatura();//--- guardar datos de jefatura antigua en "ja"
-		Jefatura jn = jefaturaService.nueva(idDep, idUsu);//---------------- guardar datos de jefatura nueva en "jn"
-		 
-		 System.out.println("--------");
-		 System.out.println(jn.getId());
-		 System.out.println(jn.getFechaRegistro());
-		 System.out.println(jn.getDepartamento().getNombre());
-		 System.out.println(jn.getJefe().getNombreCompleto());
+	public String asignarJefatura(@PathVariable(name = "idd")Long idDep, 
+								  @PathVariable(name = "idu")Long idUsu, Model model, RedirectAttributes flash) {
+		
+		SimpleDateFormat f = new SimpleDateFormat("dd/MMM/yyyy HH:mm");//---- formato para fechas
+		
+		Jefatura ja = departamentoService.findById(idDep).getJefatura();//--- guardar datos de jefatura antigua en "ja"
+		
+		Jefatura jn = jefaturaService.nueva(idDep, idUsu);//----------------- guardar datos de jefatura nueva en "jn"
 		
 		
 		if(ja != null) {

@@ -1,5 +1,6 @@
 package com.sigsaaqyf.app.models.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.sigsaaqyf.app.models.dao.IDepartamentoDao;
 import com.sigsaaqyf.app.models.dao.JefaturaDao;
 import com.sigsaaqyf.app.models.entity.Departamento;
 import com.sigsaaqyf.app.models.entity.Jefatura;
+import com.sigsaaqyf.app.models.entity.Usuario;
 
 @Service
 public class DepartamentoServiceImpl implements IDepartamentoService {
@@ -52,6 +54,19 @@ public class DepartamentoServiceImpl implements IDepartamentoService {
 			departamentoDao.save(d);
 		}
 		return j;
+	}
+
+	@Override
+	public List<Usuario> findAllJefes() {
+		
+		List<Usuario> jefes = new ArrayList<Usuario>();
+		List<Departamento> deptos = (List<Departamento>) departamentoDao.findAll();
+		for(Departamento d: deptos) {
+			if(d.getJefatura()!=null) {
+				jefes.add(d.getJefatura().getJefe());
+			}
+		}
+		return jefes;
 	}
 
 }

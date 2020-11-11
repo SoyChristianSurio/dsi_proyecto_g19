@@ -5,19 +5,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
 
-	@GetMapping("/home")
+	@GetMapping("/")
+	public String homeG(Model model) {
+		
+		return "redirect:/usuario/registro";
+	}
+	
+	@GetMapping("/admin/home")
 	public String homeG(@ModelAttribute("username")String username, Model model) {
 		model.addAttribute("usuario", username);
 		return "admin/home";
 	}
 	
-	@PostMapping("/home")
+	@PostMapping("/admin/home")
 	public String homeP(@ModelAttribute("username")String username, Model model) {
 		model.addAttribute("usuario", username);
 		return "admin/home";
