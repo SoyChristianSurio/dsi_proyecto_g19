@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+
 public class AdminController {
 
 	@GetMapping("/")
 	public String homeG(Model model) {
-		
 		return "redirect:/usuario/registro";
 	}
 	

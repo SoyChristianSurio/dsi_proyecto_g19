@@ -35,14 +35,14 @@ public class UsuarioController {
 		UsuarioRegistro usuario = new UsuarioRegistro();
 		model.addAttribute("titulo", "Registro de Usuario");
 		model.addAttribute("usuario", usuario);		
-		return "usuario/registro";		
+		return "/usuario/registro";		
 	}
 	
 	@PostMapping("/registro")
 	public String registroP(@Valid @ModelAttribute("usuario")UsuarioRegistro myUsuario, BindingResult result, Model model) {		
 		if (result.hasErrors()) {
             model.addAttribute("titulo", "Registro de Usuario");
-            return "usuario/registro";
+            return "/usuario/registro";
         }
 		try {
 			if(!myUsuario.getPassword().equals(myUsuario.getPassword2())) {
@@ -55,13 +55,13 @@ public class UsuarioController {
 			model.addAttribute("usuario", myUsuario);
             model.addAttribute("titulo", "Registro de Usuario");
             model.addAttribute("errorMessage", e.getMessage());
-            return "usuario/registro";
+            return "/usuario/registro";
 		}
 		
 		usuarioService.registrarEstudiante(myUsuario);
 		model.addAttribute("registrado", true);
 		model.addAttribute("usuario", myUsuario);
-		return "usuario/registro";
+		return "/usuario/registro";
 	}
 	//-----FIN REGISTRO DE USUARIOS-------------
 	
@@ -70,7 +70,7 @@ public class UsuarioController {
 	public String listarTodos(Model model, RedirectAttributes flash) {
 		model.addAttribute("titulo", "Lista de Usuarios");
 		model.addAttribute("usuarios", usuarioDao.findAll());
-		return "usuario/lista";
+		return "/usuario/lista";
 	}
 	
 	//------------------------------------------------------------------------################ EDITAR ##############
@@ -78,7 +78,7 @@ public class UsuarioController {
 	public String editarG(Model model, @PathVariable(name = "id")Long id) {
 		UsuarioEditarAdmin usuario = usuarioService.usuarioEditarAdmin(id);	//recuperar usuario de la DB	
 		model.addAttribute("usuario", usuario);                             //enviar usuario a la vista
-		return "usuario/editar_adm"; 
+		return "/usuario/editar_adm"; 
 	}
 	
 	@PostMapping("/editar")
@@ -86,7 +86,7 @@ public class UsuarioController {
 		if (result.hasErrors()) {
             model.addAttribute("titulo", "Editar Usuario");
             
-            return "usuario/editar_adm";
+            return "/usuario/editar_adm";
         }
 		usuarioService.editarUsuarioAdmin(myUsuario);
 		flash.addFlashAttribute("success", "Usuario "+myUsuario.getpNombre().concat(" ")
