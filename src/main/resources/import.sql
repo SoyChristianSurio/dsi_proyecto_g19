@@ -24,3 +24,8 @@ Insert into materias (codigo, nombre) values("fiq-115","Fisioquímica");
 Insert into jefaturas (fecha_registro,departamento_id, jefe_id) values('2020-10-01',3,1);
 Update departamentos set jefatura_id=1 where (id=3);
 
+INSERT INTO ciclo (anio, semestre, activo) VALUES ('2019', '1', 0);
+INSERT INTO ciclo (anio, semestre, activo) VALUES ('2019', '2', 0);
+INSERT INTO ciclo (anio, semestre, activo) VALUES ('2020', '1', 0);
+INSERT INTO ciclo (anio, semestre, activo) VALUES ('2020', '2', 0);
+INSERT INTO ciclo (anio, semestre, activo) VALUES ('2021', '1', 0);

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+ 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    
+    <!--DataTables CSS-->
+<!--     <link rel="stylesheet" href="/js/datatables.min.css"> -->
+<!--     <link rel="stylesheet" href="/js/DataTables-1.10.21/css/dataTables.bootstrap4.min.css"> -->
+<!--     <script type="text/javascript" src="/js/datatables.min.js"></script> -->
+    
+<!--     <script type="text/javascript" src="/js/datatablesCiclos.js"></script> -->
+
+</head>
+<body>
+	<div th:insert="layouts/navbar_admin.html" th:remove="tag"></div>
+	<div class="container col-11 px-0" >
+		<div class="row py-3">
+			<div class="col-sm-2 px-0"><!-- ############## CICLOS ############## -->
+				<div class="card">
+					
+					<div class="card-header py-1">
+						<h4 class="text-secondary">Ciclos</h4>
+						<input class="form-control form-control-sm" id="ciclosInput" type="text" onkeyup="filtrarCiclos()"/>
+					</div>
+					<div class="card-body py-1 " style="height: 150px;overflow: scroll">
+						<table id="cilosDataTables" class="table table-sm"> <!-- ########## DataTables Ciclos ########### -->
+							<tbody>
+								<tr th:if="${#lists.isEmpty(ciclos)}"><td>no hay ciclos en la base de datos</td></tr>
+								<tr th:each="ciclo : ${ciclos}">
+									<td><a th:text="${ciclo.anio}+' '+${ciclo.semestre}" th:href="@{ciclo/gestionar/}+${ciclo.id}"></a></td>
+								</tr>
+								
+								
+							</tbody>
+						</table>						
+					</div>
+					<div class="card-footer text-center">
+						<a href="#" class="link text-success">Crear Ciclo</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-10"><!-- ############## CICLO EN GESTION ############## -->
+				<div class="card">
+					<div class="card-header px-0 py-0">
+						<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+							<a class="navbar-brand" href="#">Ciclo 1 2019</a>
+							<button class="navbar-toggler" type="button"
+								data-toggle="collapse" data-target="#navbarSupportedContent"
+								aria-controls="navbarSupportedContent" aria-expanded="false"
+								aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse" id="navbarSupportedContent">
+								<ul class="navbar-nav mr-auto">
+									<li class="nav-item dropdown bg-light rounded">
+										<a class="nav-link dropdown-toggle  text-success" href="#" id="navbarDropdown"
+										role="button" data-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false"> Activo </a>
+										<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+											<a class="dropdown-item" href="#">Desactivar</a>
+										</div>
+									</li>
+								</ul>
+								<ul class="navbar-nav ml-auto">
+									<li class="nav-item rounded bg-danger">
+										<a class="nav-link py-auto" href="#">
+											<i class="fas fa-trash-alt mr-1" style="font-size:20px;color:white"/></i>eliminar
+										</a>
+									</li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Cras justo odio</li>
+						<li class="list-group-item">Dapibus ac facilisis in</li>
+						<li class="list-group-item">Vestibulum at eros</li>
+						<li class="list-group-item">Cras justo odio</li>
+						<li class="list-group-item">Dapibus ac facilisis in</li>
+						<li class="list-group-item">Vestibulum at eros</li>
+					</ul>
+					<div class="card-body">
+						<a href="#" class="card-link">Card link</a> <a href="#"
+							class="card-link">Another link</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+function filtrarCiclos() {
+	  var input, filter, table, tr, td, i, txtValue;
+	  input = document.getElementById("ciclosInput");
+	  filter = input.value.toUpperCase();
+	  table = document.getElementById("cilosDataTables");
+	  tr = table.getElementsByTagName("tr");
+	  for (i = 0; i < tr.length; i++) {
+	    td = tr[i].getElementsByTagName("td")[0];
+	    if (td) {
+	      txtValue = td.textContent || td.innerText;
+	      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+	        tr[i].style.display = "";
+	      } else {
+	        tr[i].style.display = "none";
+	      }
+	    }       
+	  }
+	}
+</script>
+
+</body>
+</html>
