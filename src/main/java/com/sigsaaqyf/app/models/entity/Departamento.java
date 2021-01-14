@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,10 +27,10 @@ public class Departamento implements Serializable {
 	@NotBlank(message = "debe escribir un nombre")
 	private String nombre;
 //---------------------------------------------------------
-	@OneToMany(mappedBy = "departamento",fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(mappedBy = "departamento",fetch = FetchType.LAZY)
 	private List<Materia> materias;
 //---------------------------------------------------------	
-	@OneToOne(fetch = FetchType.LAZY,orphanRemoval = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST} )
+	@OneToOne(fetch = FetchType.LAZY )
 	private Jefatura jefatura;
 //---------------------------------------------------------	
 	private static final long serialVersionUID = 1L;

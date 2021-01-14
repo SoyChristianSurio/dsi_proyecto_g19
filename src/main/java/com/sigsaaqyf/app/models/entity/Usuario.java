@@ -5,9 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,6 +40,9 @@ public class Usuario implements Serializable {
 	@Column(name = "s_apellido")
 	private String sApellido;
 //-------------------------------------------------------------
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Role role;
+	
 	@Column
 	private String password;
 //-------------------------------------------------------------
@@ -63,7 +68,15 @@ public class Usuario implements Serializable {
 	public void prePersist() {
 		this.fechaRegistro=new Date();
 	}
-	
+		
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	public String getNombreCompleto() {
 		if(this.sNombre==null) return this.pNombre.concat(" ").concat(this.pApellido).concat(" ").concat(this.sApellido);
 		else return this.pNombre.concat(" ").concat(sNombre).concat(" ").concat(this.pApellido).concat(" ").concat(this.sApellido);

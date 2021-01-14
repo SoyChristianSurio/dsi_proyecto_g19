@@ -1,0 +1,168 @@
+<div th:if="${cicloGes!=null}">
+	<input id="cicloIdHidden" type="hidden" th:value="${cicloGes.id}">
+	<input id="MateriaHidden" type="hidden" value="">
+
+<!-- #################### Modal Activar Ciclo ##################################-->
+	<div class="modal fade" id="activarModal" tabindex="-1" role="dialog" aria-labelledby="activarModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	
+	      <div class="modal-header"><!---------------header---------------------->
+	        <h5 class="modal-title" id="activarModalTitle">Confirmar Activación de Ciclo</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	
+	      <div class="modal-body"><!------------------body----------------------->
+	        ¿Está seguro que desea ativar este Ciclo?
+	        <br>
+	        <small>Esto desactivará, si lo hay, al ciclo que está actualmente activo</small>
+	        
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        
+	        <button type="button" class="btn btn-success" th:onclick="activarCiclo()" id="btnActivar">Activar</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+
+	<!--###################### Modal Desactivacion ###############################-->
+	<div class="modal fade" id="desactivarModal" tabindex="-1" role="dialog" aria-labelledby="desactivarModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	
+	      <div class="modal-header"><!---------------header---------------------->
+	        <h5 class="modal-title" id="desactivarModalTitle">Confirmar Desactivación de ciclo</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	
+	      <div class="modal-body" id="desactivarModalBody"><!------------------body----------------------->
+	        ¿Desea desactivar el ciclo?<br>
+	        <small>Se desactivarán todas las materias impartidas en este ciclo</small>
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="button" class="btn btn-warning" th:onclick="desactivarCiclo()" id="btnDesactivar">Desactivar</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+
+
+	<!--###################### Modal Eliminar ###############################-->
+	<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	
+	      <div class="modal-header"><!---------------header---------------------->
+	        <h5 class="modal-title text-danger" id="eliminarModalTitle" >Confirmar Eliminación de ciclo</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	
+	      <div class="modal-body" id="eliminarModalBody"><!------------------body----------------------->
+	        ¿Desea Eliminar el ciclo?<br>
+	        <small class="text-danger">No podrá eliminar si hay materias impartidas en este ciclo</small>
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="button" class="btn btn-danger" th:onclick="eliminarCiclo()" id="btnEliminar">Eliminar</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+	<!--###################### Modal Activar Materia impartida ###############################-->
+	<div class="modal fade border border-primary" id="mactivarModal" tabindex="-1" role="dialog" aria-labelledby="mactivarModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content  border border-primary">
+	
+	      <div class="modal-header  bg-primary"><!---------------header---------------------->
+	        <h5 class="modal-title text-light" id="mactivarModalTitle" >Confirmar Activación de Materia</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	
+	      <div class="modal-body" id="mactivarModalBody"><!------------------body----------------------->
+	        ¿Desea activar la Materia?<br>
+	        <small class="text-danger"></small>
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="button" class="btn btn-primary" th:onclick=" ' confirmarAction(\'activar\') '" id="btnActivarMateria">Activar</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+	<!--###################### Modal Desactivar Materia impartida ###############################-->
+	<div class="modal fade border border-warning" id="mdesactivarModal" tabindex="-1" role="dialog" aria-labelledby="mdesactivarModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content border border-warning">
+	
+	      <div class="modal-header bg-warning"><!---------------header---------------------->
+	        
+	        <h5 class="modal-title" id="mdesactivarModalTitle" >Confirmar Desactivar de Materia</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	
+	      <div class="modal-body" id="mdesactivarModalBody"><!------------------body----------------------->
+	        <div id="DesactivarModalBodyTittle"></div>
+	        ¿Desea desactivar la Materia?<br>
+	        <small class="text-secondary">Al desactivar la materia, los procesos sobre las evaluaciones se desactivan</small>
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="button" class="btn btn-warning" th:onclick="' confirmarAction(\'desactivar\') '" id="btnDesctivarMateria">Desactivar</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+	<!--###################### Modal Eliminar Materia impartida ###############################-->
+	<div class="modal fade border border-danger" id="meliminarModal" tabindex="-1" role="dialog" aria-labelledby="meliminarModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content border border-danger">
+	
+	      <div class="modal-header bg-danger"><!---------------header---------------------->
+	        <h5 class="modal-title text-light" id="meliminarModalTitle" >Confirmar Eliminación de Materia</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	
+	      <div class="modal-body" id="meliminarModalBody"><!------------------body----------------------->
+	        <div id="EliminarModalBodyTittle"></div>
+	        ¿Desea Eliminar el Materia?<br>
+	        <small class="text-danger">Al eliminar la materia impartida en este ciclo, se perderá permantentemente</small>
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="button" class="btn btn-danger" th:onclick="' confirmarAction(\'eliminar\') '" id="btnEliminarMateria">Eliminar</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+</div>

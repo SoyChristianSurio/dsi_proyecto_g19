@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<title>Login</title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+		<ul class="navbar-nav navbar-right w-100 mr-5">
+			<li  class="nav-item mr-auto">
+				<a class="navbar-brand" th:href="@{/}" title="Ir a página de inicio">SIGSAAQyF</a>
+			</li>
+			<li class="dropdown dropleft rounded bg-light">
+				<a class="nav-link text-secondary" href=" " id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+				aria-haspopup="true" aria-expanded="false" sec:authentication="name"> Dropdown link </a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					
+					<form th:action="@{/logout}" id="formLogout" method="post">
+					<button onclick="document.getElementById('formLogout').submit();" type="submit" class="dropdown-item">
+						<i class="fas fa-sign-out-alt mr-2"></i>
+						Cerrar sesión
+					</button>
+					</form> 
+					
+				</div>
+			</li>
+		</ul>
+	</nav>
+	<nav class="navbar navbar-dark bg-dark">
+  		
+	</nav>
+	<div class="container align-middle">
+		<div class="card text-center mt-5">
+			<div class="card-header text-center ">
+				<h3 class="text-secondary">Facultad de Química y Farmacia:</h3>
+				<h5 class="text-secondary">Sistema para la realizacion de solicitudes</h5> 
+			</div>
+			<div class="card-body">
+				<div class="jumbotron">
+				  <h1>Error 404</h1>
+				  <p><i class="far fa-surprise"></i> La página que buscas no existe</p>
+				</div>
+			</div><!-- END CARD BODY -->
+			
+		</div>
+	</div>
+</body>
+</html>

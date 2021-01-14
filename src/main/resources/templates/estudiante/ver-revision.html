@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+
+</head>
+<body>
+	<div th:insert="layouts/navbar_admin.html" th:remove="tag"></div>
+	<div class="container col-12 " >
+		<div class="row py-3 px-3 border border-secondary">
+<!-- #################################################################### Solicitud ############## -->		
+			<div class="col-sm-10 px-3 py-3 mx-auto border border-secondary rounded bg-light" th:classappend="${sol.aprobado==null}?'border-secondary':(${sol.aprobado}?'border-success':'border-danger')">
+				<h3 class="mb-0 text-center">UNIVERSIDAD DE EL SALVADOR</h3>
+				<h4 class="mb-0 text-center">Facultad de Química y Farmacia</h4>
+				<p class="mb-1 text-center">Departamento de <span class="font-weight-bold" th:text="${sol.evaluacion.asignatura.materia.departamento.nombre}"></span></p>
+				<h5>Solicitud de revision ordinaria de evaluación</h5>
+				
+				<p>
+				<span class="font-weight-bold" th:text="' '+${sol.evaluacion.asignatura.materia.departamento.jefatura.jefe.getNombreCompleto()}"></span>
+				, por medio de la presente yo,
+				<span class="font-weight-bold" th:text="' '+${sol.matricula.estudiante.getNombreCompleto()}"></span>
+				, estudiante inscrito en la unidad de aprendizaje
+				<span class="font-weight-bold" th:text="' '+${sol.evaluacion.asignatura.materia.nombre}+' ('+${sol.evaluacion.asignatura.materia.codigo}+')'"></span>
+				, con numero de carnet
+				<span class="font-weight-bold" th:text="' '+${sol.matricula.estudiante.username}"></span>
+				, solicito de la manera más atenta se me autorice la Revision Ordinaria de la siguiente actividad evaluada:
+				<span class="font-weight-bold" th:text="' '+${sol.evaluacion.tipo.descripcion}+' '+${sol.evaluacion.numeroEvaluacion}"></span>
+				de la unidad de aprendizaje.
+				</p>
+				<p class="text-right">
+				Ciudad universitaria,
+				<span class="font-weight-bold" th:text="' '+${#dates.format(sol.fechaRegistro, 'dd-MM-yyyy')}" title="dia/mes/año"></span> 
+				</p>
+				<div th:if="${sol.aprobado!=null}" class="p-4 border border-secondary rounded">
+					<p class="mb-0">
+						Luego de un consenso con el Coordinador de la asignatura se resuelve
+						<span th:class="font-weight-bold" th:text="${sol.aprobado}?' aprobada ':' denegada '" th:classappend="${sol.aprobado}?'text-success':'text-danger'"></span>
+						la revisión. 
+					<span th:if="${sol.aprobado}">Para lo cual deberá estar presente en el dia, hora y lugar siguiente:<span class="font-weight-bold" th:text="' '+${sol.msg}"></span></span>
+					</p>
+				</div>
+				<div th:if="${sol.aprobado==null}" class="p-4 border border-secondary rounded font-weight-bold text-secondary">Solicitud pendiente de aprobación</div>
+				
+				<a class="btn btn-dark btn-sm mt-3" th:href="@{/estudiante/}">volver</a>
+			</div>
+
+			
+		</div>
+	</div>
+</body>
+</html>

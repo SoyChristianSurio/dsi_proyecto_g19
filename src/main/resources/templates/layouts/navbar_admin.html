@@ -6,8 +6,8 @@
 			aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul class="navbar-nav">
+		<div class="collapse navbar-collapse w-100" id="navbarNavDropdown">
+			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
 					<a class="nav-link"th:href="@{/ciclo/activo}">Inicio</a>
 					</li>
@@ -20,13 +20,20 @@
 				<li class="nav-item">
 					<a class="nav-link" th:href="@{/usuario/lista}">Usuarios</a>
 					</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-					aria-haspopup="true" aria-expanded="false"> Dropdown link </a>
+			</ul>
+			<ul class="navbar-nav navbar-right mr-5">
+				<li class="dropdown dropleft rounded bg-light">
+					<a class="nav-link text-secondary" href=" " id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false" sec:authentication="name"> Dropdown link </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-						<a class="dropdown-item" href="#">Action</a> 
-						<a class="dropdown-item" href="#">Another action</a> 
-						<a class="dropdown-item" href="#">Something else here</a>
+						
+						<form th:action="@{/logout}" id="formLogout" method="post">
+						<button onclick="document.getElementById('formLogout').submit();" type="submit" class="dropdown-item">
+							<i class="fas fa-sign-out-alt mr-2"></i>
+							Cerrar sesión
+						</button>
+						</form> 
+						
 					</div>
 				</li>
 			</ul>			

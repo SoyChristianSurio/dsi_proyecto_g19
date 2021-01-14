@@ -13,9 +13,13 @@ public interface IUsuarioService {
 	
 	public List<Usuario> findAll();
 	public void registrarEstudiante(UsuarioRegistro u);
+	public Usuario registrarEstudiante(Usuario u);
 	public void editarUsuarioAdmin(UsuarioEditarAdmin uea);
+	public Usuario crearUsuarioAdmin(UsuarioEditarAdmin uea);
 	public boolean usernameDisponible(String username);
+	public boolean usernameDisponible(UsuarioEditarAdmin user);
 	public Usuario findById(Long id);
+	public Usuario findByUsername(String username);
 	public UsuarioEditarAdmin usuarioEditarAdmin(Long id);
 	public List<Usuario> findAllDocentes();
 	public List<Usuario> findAllDocentesActivos();

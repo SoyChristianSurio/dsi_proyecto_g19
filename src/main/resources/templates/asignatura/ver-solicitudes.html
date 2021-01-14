@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+    
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		
+	
+		<div class="card bg-light mb-3 col-sm-10 px-0">
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD-------------- -->
+			<div class="card-header">
+				<h3 class="card-title text-success mb-0" th:text="${titulo}+': '+${eva.asignatura.materia.nombre}"></h3>	
+				<h4 class="text-secondary" th:text="${eva.tipo.descripcion}+' '+${eva.numeroEvaluacion}"></h4>			
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			</div>
+			
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD BODY--------- -->	
+			<div class="card-body" >
+					<!-- //////////////////////////////////////////////// Tabla de solicitudes de revision       /////////////////////////// -->
+					<div class="card border-dark mb-3 p-4"  >                                                                       <!-- //// -->
+						<div th:if="${#lists.isEmpty(eva.solicitudesRevision)}">
+							<h5 class="text-secondary">No se han realizado solicitudes para esta evaluación</h5>
+						</div>
+						<table class="table table-sm" id="tablaUsuarios" style="overflow-x:scroll" th:if="${not #lists.isEmpty(eva.solicitudesRevision)}">                                <!-- //// -->
+							<thead>
+								<tr>
+									<th>Carnet</th>
+									<th>Nombre</th>
+									<th>Estado</th>
+									<th>Acción</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="solicitud: ${eva.solicitudesRevision}">
+									<td th:text="${solicitud.matricula.estudiante.username}"></td>
+									<td th:text="${solicitud.matricula.estudiante.getNombreCompleto()}"></td>
+									<td th:text="${solicitud.aprobado==null}?'Pendiente':(${solicitud.aprobado}?'Aprobada':'Denegada')" 
+										th:class="${solicitud.aprobado==null}?'text-secondary':(${solicitud.aprobado}?'text-success':'text-danger')"></td>
+									<td>
+										<a class="btn btn-success btn-sm" 
+										th:href="@{'/asignatura/revisarRevision/'+${solicitud.id}}">
+											<i class="fas fa-search mr-3"></i> Revisar
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>                                                                                                  <!-- ////  -->
+					</div>                                                                                                        <!-- ////  -->
+					<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////  -->
+					<a class="btn btn-dark " th:href="@{'/asignatura/gestionar/'+${eva.asignatura.id}}">Regresar</a>
+				
+			</div>
+
+		</div>	<!-- --------------------------------------------------------------------------------------------------------------------END CARD--------- -->	
+	
+	</div>
+ 	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
+	</body>
+</html>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sigsaaqyf.app.models.dao.IRoleDao;
 import com.sigsaaqyf.app.models.dao.IUsuarioDao;
 import com.sigsaaqyf.app.models.entity.Usuario;
 import com.sigsaaqyf.app.models.forms.UsuarioEditarAdmin;
@@ -28,8 +29,10 @@ public class UsuarioController {
 	IUsuarioDao usuarioDao; //objeto de acceso a tabla Usuarios de la BD
 	@Autowired
 	IUsuarioService usuarioService;
+	@Autowired
+	IRoleDao roleDao;
 	
-	//-----HANDLERS PARA EL REGISTRO DE USUARIOS----------------
+//################################################  REGISTRO DEL USUARIO   #########################################
 	@GetMapping("/registro")
 	public String registroG(Model model) {
 		UsuarioRegistro usuario = new UsuarioRegistro();
@@ -48,7 +51,7 @@ public class UsuarioController {
 			if(!myUsuario.getPassword().equals(myUsuario.getPassword2())) {
 				throw new Exception("Las contraseñas no coinciden");
 			}else if (!usuarioService.usernameDisponible(myUsuario.getCarnet())) {
-				throw new Exception("Ya existe un usuario con ese carnet");
+				throw new Exception("Ya existe, escriba uno diferente");
 			}
 			
 		} catch (Exception e) {
@@ -58,14 +61,56 @@ public class UsuarioController {
             return "usuario/registro";
 		}
 		
-		usuarioService.registrarEstudiante(myUsuario);
+		usuarioService.registrarEstudiante(myUsuario); 								// Servicio que persiste los datos del usuario
 		model.addAttribute("registrado", true);
 		model.addAttribute("usuario", myUsuario);
 		return "usuario/registro";
 	}
-	//-----FIN REGISTRO DE USUARIOS-------------
+//################################################ ADMINISTRADOR REGISTRA A UN USUARIO   #########################################
+	@GetMapping("/admin/registro")
+	public String adminRegistroG(Model model) {
+		UsuarioEditarAdmin usuario = usuarioService.usuarioEditarAdmin(null);	// recuperar usuario de la DB	
+		model.addAttribute("usuario", usuario);                             	// enviar usuario a la vista
+		model.addAttribute("roles", roleDao.findAll());							// enviar lista de roles para el select
+		model.addAttribute("msjCrear", "Creación de nuevo Usuario");			// encabezado del panel principal
+		return "usuario/editar_adm"; 
+	}
+
+
+	@PostMapping("/admin/registro")
+	public String AdminRegistroP(	@Valid @ModelAttribute("usuario")UsuarioEditarAdmin myUsuario, 
+									BindingResult result, Model model, RedirectAttributes flash) {		
+		
+		if (result.hasErrors()) {													// Si hay errores con las validaciones de la clase "UsuarioEditarAdmin"
+			model.addAttribute("roles", roleDao.findAll());							// se envian nuevamente la lista de roles para el select
+			model.addAttribute("msjCrear", "Creación de nuevo Usuario");			// se envia nuevamente el encabezado del panel principal
+			return "usuario/editar_adm";											// y se carga la vista nuevamente (los mensajes de error se envian automaticamente)
+        }																			//
+																					//
+		if (!usuarioService.usernameDisponible(myUsuario.getUsername())) {			// Se valida que el nombre de usuario ingresado no esté ocupado
+			model.addAttribute("usuario", myUsuario);   							//
+			model.addAttribute("roles", roleDao.findAll());							//
+			model.addAttribute("msjCrear", "Creación de nuevo Usuario");			//
+			model.addAttribute("errorMessage", "Ya existe, escriba uno diferente");	//
+			return "usuario/editar_adm";											//
+		}																			//
+																					//
+		usuarioService.crearUsuarioAdmin(myUsuario);								// Se envía el formulario válido al respectivo servicio donde se guardará el usuario
+																					//
+		flash.addFlashAttribute("success", "Usuario "								// Se envía un mensaje para indicar que el usuario se guardó
+				+ myUsuario.getpNombre()											//
+				.concat(" ")														//
+				.concat(myUsuario.getsNombre()										//
+				.concat(" "))														//
+				.concat(myUsuario.getpApellido())									//
+				.concat(" ")														//
+				.concat(myUsuario.getsApellido())									//
+				.concat(" fué Editado exitosamente")								//
+				);																	//
+		return "redirect:/usuario/lista";											// Se redirecciona a la Lista de usuarios
+	}
 	
-	//----- handlers de acceso a la gestion de usuario
+//###########################################################   GESTIONAR USUARIOS   #################################
 	@GetMapping("/lista")
 	public String listarTodos(Model model, RedirectAttributes flash) {
 		model.addAttribute("titulo", "Lista de Usuarios");
@@ -73,11 +118,12 @@ public class UsuarioController {
 		return "usuario/lista";
 	}
 	
-	//------------------------------------------------------------------------################ EDITAR ##############
+//###################################################################   EDITAR   #################################
 	@GetMapping("/editar/{id}")
 	public String editarG(Model model, @PathVariable(name = "id")Long id) {
 		UsuarioEditarAdmin usuario = usuarioService.usuarioEditarAdmin(id);	//recuperar usuario de la DB	
 		model.addAttribute("usuario", usuario);                             //enviar usuario a la vista
+		model.addAttribute("roles", roleDao.findAll());
 		return "usuario/editar_adm"; 
 	}
 	
@@ -85,9 +131,16 @@ public class UsuarioController {
 	public String editarP(@Valid @ModelAttribute("usuario")UsuarioEditarAdmin myUsuario, BindingResult result, Model model, RedirectAttributes flash) {
 		if (result.hasErrors()) {
             model.addAttribute("titulo", "Editar Usuario");
-            
+            model.addAttribute("roles", roleDao.findAll());
             return "usuario/editar_adm";
         }
+		if (!usuarioService.usernameDisponible(myUsuario)) {
+			model.addAttribute("usuario", myUsuario);
+			model.addAttribute("errorMessage", "Ya existe, escriba uno diferente");
+			model.addAttribute("titulo", "Editar Usuario");
+			model.addAttribute("roles", roleDao.findAll());
+            return "usuario/editar_adm";
+		}
 		usuarioService.editarUsuarioAdmin(myUsuario);
 		flash.addFlashAttribute("success", "Usuario "+myUsuario.getpNombre().concat(" ")
 				.concat(myUsuario.getsNombre().concat(" "))
@@ -95,6 +148,8 @@ public class UsuarioController {
 				.concat(myUsuario.getsApellido()).concat(" fué Editado exitosamente"));;
 		return "redirect:/usuario/lista"; 
 	}
+	
+	
 	//----------------------------------------------------------------------- ################# Activación/Desactivación ##########################
 	@GetMapping("/cambiarEstado/{id}/{activo}")
 	public String cambiarEstado(@PathVariable(name = "id")Long id, @PathVariable(name = "activo")Boolean activo, Model model,RedirectAttributes flash) {
@@ -116,6 +171,7 @@ public class UsuarioController {
 		return "redirect:/usuario/lista";
 	}
 	//--------------------------------------------------
+	
 	@GetMapping("/eliminar/{id}")
 	public String eliminar(@PathVariable(name = "id")Long id, RedirectAttributes flash) {
 		Usuario u = usuarioService.findById(id);

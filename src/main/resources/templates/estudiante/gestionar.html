@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+
+</head>
+<body>
+	<div th:insert="layouts/navbar_admin.html" th:remove="tag"></div>
+	<div class="container col-12 " >
+		<h3 class="text-center mt-4">Gestión de solicitudes</h3>
+		<h5 th:if="${#lists.isEmpty(matriculas)}">No está matriculado en ninguna materia del ciclo activo</h5>
+		<div class="row py-3 px-3 border border-secondary bg-ligth" th:if="${not #lists.isEmpty(matriculas)}">
+<!-- #################################################################### Matriculas ############## -->		
+			<h5>Mis materias</h5>
+			<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			<div class="col-sm-12 px-0">
+				<div id="accordion">
+					<div class="card" th:each="m:${matriculas}">
+				    	<div class="card-header" th:id="${#ids.seq('heading')}">
+				      		<h5 class="mb-0" th:id="'meh_'+${#ids.seq('collapse')}">
+				        		<button th:class="'btn btn-link collapsed'" data-toggle="collapse" 
+				        				th:data-target="'#'+${#ids.prev('collapse')}"
+				        				aria-expanded="false" 
+				        				th:aria-controls="${#ids.prev('collapse')}"
+				        				th:text="${m.asignatura.materia.nombre}">
+				          		</button>
+				      		</h5>
+				    	</div>
+				
+				    	<div th:id="${#ids.prev('collapse')}" class="collapse" th:data-aria-labelledby="${#ids.prev('heading')}" data-parent="#accordion">
+				      		<div class="card-body">
+					        	<h4 th:if="${#lists.isEmpty(m.asignatura.eva)}">Materia sin Evaluaciones aún</h4>
+					        	<table class="table table-sm" th:if="${not #lists.isEmpty(m.asignatura.eva)}">
+					        		<thead class="thead-light">
+								     	<tr>
+								        	<th>Evaluación</th>
+								        	<th>Realizar solicitud de:</th>
+								        	
+								        	<th>Revisión</th>
+								        	<th>Diferido</th>
+								        	<th>Repetido</th>
+								        	<th>Cambio de Fecha</th>
+								      	</tr>
+								    </thead>
+								    <tbody>
+								    	<tr th:each="eval:${m.asignatura.eva}">
+								        	<td th:text="${eval.tipo.descripcion}+' '+${eval.numeroEvaluacion}"></td>
+								        	<td>
+												<a th:class="${eval.revActivo}?'btn btn-light border border-secondary':'btn btn-light disabled'"
+													th:href="@{'/estudiante/'+${m.id}+'/solicitar_revision/'+${eval.id}}">Revisión</a>
+												<a th:class="${eval.difActivo}?'btn btn-light border border-secondary':'btn btn-light disabled'">Diferido</a>
+												<a th:class="${eval.repActivo}?'btn btn-light border border-secondary':'btn btn-light disabled'">Repetido</a>
+												<a th:class="${eval.camActivo}?'btn btn-light border border-secondary':'btn btn-light disabled'">Cambio de fecha</a>
+											</td>
+											
+											<td>
+											<div th:each="sr:${solicitudesRevision}">
+												<a 	th:class="${sr.aprobado==null}?	'btn btn-light border border-secondary':
+															 (${sr.aprobado}?'btn btn-light border border-success':'btn btn-light border border-danger')"
+													th:href="@{'/estudiante/ver_revision/'+${sr.id}}"
+													th:if="${eval.id==sr.evaluacion.id}">
+													<i class="far fa-eye pr-2"></i>Ver
+												</a>
+											</div>
+											</td>
+											<td  title="NO IMPlEMENTADO"></td>
+											<td  title="NO IMPlEMENTADO"></td>
+											<td  title="NO IMPlEMENTADO"></td>
+								      	</tr>
+								    </tbody>
+								</table>
+				      		</div><!-- End Card Body -->
+				    	</div>
+				    </div><!-- End Card -->
+				</div>
+			</div>
+<!-- ########################################################### MATERIA IMPARTIDA EN GESTION ############## -->
+			
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<div th:if="${maimpGes!=null}">
+	<input id="maimpIdHidden" type="hidden" th:value="${maimpGes.id}">
+	<input id="MateriaHidden" type="hidden" value="">
+
+<!-- #################### Modal Crear Teorico ##################################-->
+	<div class="modal fade" id="crearTeoModal" tabindex="-1" role="dialog" aria-labelledby="crearTeoModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	
+	      <div class="modal-header"><!---------------header---------------------->
+	        <h4 class="modal-title" id="crearTeoModalTitle">Crear grupo <strong>Teórico</strong></h4>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	      
+		  <form id="grupoTeoForm" th:object="${newTeo}" th:method="post" th:action="@{/asignatura/}+${maimpGes.id}+'/gt/crear'">
+	      <div class="modal-body"><!------------------body----------------------->
+	        
+	        	<div class="form-group">
+					<label for="numero">Número de Grupo Teórico:</label> 
+					<input type="number" min="1" class="form-control" th:field="*{numeroGrupo}"/>
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('numeroGrupo')}" th:errors="*{numeroGrupo}"></small>
+					<small class="form-text text-danger" th:if="${otroError}!=null" th:text="${otroError}"></small>
+				</div>	        	
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="submit" class="btn btn-success" id="btnCrearTeo">Crear</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+
+<!--###################### Modal Crear Discusión ########################################-->
+	<div class="modal fade" id="crearDisModal" tabindex="-1" role="dialog" aria-labelledby="crearDisModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	
+	      <div class="modal-header"><!---------------header---------------------->
+	        <h4 class="modal-title text-secondary" id="crearDisModalTitle">Crear grupo de <strong>Discusión</strong></h4>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	      
+		  <form id="grupoDisForm" th:object="${newDis}" th:method="post" th:action="@{/asignatura/}+${maimpGes.id}+'/gd/crear'">
+	      <div class="modal-body"><!------------------body----------------------->
+	        
+	        	<div class="form-group">
+					<label for="numero">Número de Grupo de Discusión:</label> 
+					<input type="number" min="1" class="form-control" th:field="*{numeroGrupo}"/>
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('numeroGrupo')}" th:errors="*{numeroGrupo}"></small>
+					<small class="form-text text-danger" th:if="${otroError}!=null" th:text="${otroError}"></small>
+				</div>	        	
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="submit" class="btn btn-success" id="btnCrearDis">Crear</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+
+
+<!--###################### Modal Crear Laboratorio ########################################-->
+	<div class="modal fade" id="crearLabModal" tabindex="-1" role="dialog" aria-labelledby="crearLabModalTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	
+	      <div class="modal-header"><!---------------header---------------------->
+	        <h4 class="modal-title text-secondary" id="crearLabModalTitle">Crear grupo de <strong>Laboratorio</strong></h4>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="cerrar">
+	          <span aria-hidden="true">×</span> 
+	        </button>
+	      </div>
+	      
+		  <form id="grupoDisForm" th:object="${newLab}" th:method="post" th:action="@{/asignatura/}+${maimpGes.id}+'/gl/crear'">
+	      <div class="modal-body"><!------------------body----------------------->
+	        
+	        	<div class="form-group">
+					<label for="numero">Número de Grupo de Discusión:</label> 
+					<input type="number" min="1" class="form-control" th:field="*{numeroGrupo}"/>
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('numeroGrupo')}" th:errors="*{numeroGrupo}"></small>
+					<small class="form-text text-danger" th:if="${otroError}!=null" th:text="${otroError}"></small>
+				</div>	        	
+	      </div>
+	      
+	      <div class="modal-footer"><!----------------footer--------------------->
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	        <button type="submit" class="btn btn-success" id="btnCrearLab">Crear</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	
+	
+	<script th:if="${errorCrearGrupo}=='teo'"> $(document).ready(function(){$("#crearTeoModal").modal("show");});</script>
+	<script th:if="${errorCrearGrupo}=='dis'"> $(document).ready(function(){$("#crearDisModal").modal("show");});</script>
+	<script th:if="${errorCrearGrupo}=='dis'"> $(document).ready(function(){$("#crearLabModal").modal("show");});</script>
+</div>

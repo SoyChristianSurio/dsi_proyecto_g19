@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+    
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		
+	
+		<div class="card bg-light mb-3 col-sm-10 px-0">
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD-------------- -->
+			<div class="card-header">
+				<h3 class="card-title text-success" th:text="${titulo}+' '+${numeroGrupo}"></h3>				
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			</div>
+			
+			<!-- -----------------------------------------------------------------------------------------------------------------------CARD BODY--------- -->	
+			<div class="card-body" >
+					
+					<div class="text-muted mb-1">
+						<span th:text="${docente}?'Docente ':'Representante '"></span>actual:  
+						<span class="text-success font-weight-bold" th:text="${actual==null}?'Ninguno ':' '+${actual}"></span>
+					</div>						
+					
+					<!-- //////////////////////////////////////////////// Tabla de seleccion de docentes activos /////////////////////////// -->
+					<div class="card border-dark mb-3 p-4" >                                                                       <!-- //// -->
+						<table class="table table-sm" id="tablaUsuarios" style="overflow-x:scroll">                                <!-- //// -->
+							<thead>
+								<tr>
+									<th th:if="${not docente}">Carnet</th>
+									<th>Nombre</th>
+									<th>Acción</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="usuario: ${listado}">
+									<td  th:if="${not docente}" th:text="${usuario.username}"></td>
+									<td th:text="${usuario.getNombreCompleto()}"></td>
+									<td>
+										<a class="btn btn-success btn-sm" 
+										th:href="${docente}?@{'/asignatura/asignarDocente/'+${usuario.id}+'/'+${tipoGrupo}+'/'+${idGrupo}}:
+															@{'/asignatura/asignarRepresentante/'+${usuario.id}+'/'+${tipoGrupo}+'/'+${idGrupo}}">
+											<i class="fas fa-link fa-lg"></i> Asignar
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>                                                                                                  <!-- ////  -->
+					</div>                                                                                                        <!-- ////  -->
+					<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////  -->
+					<a class="btn btn-dark " th:href="@{'/asignatura/gestionar/'+${maimp.id}+'/'+${tipoGrupo}+'/'+${numeroGrupo}}">Regresar</a>
+				
+			</div>
+
+		</div>	<!-- --------------------------------------------------------------------------------------------------------------------END CARD--------- -->	
+	
+	</div>
+ 	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
+	</body>
+</html>

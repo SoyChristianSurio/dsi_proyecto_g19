@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>impartir materia</title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+ 	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+        
+</head>
+<body>
+
+	<div th:insert="@{/layouts/navbar_admin.html}" th:remove="tag"></div>
+	
+	<div class="container py-2">
+		<div class="card bg-light mb-3 col-sm-10 px-0 mx-auto">
+			<div class="card-header">
+				<h3 class="card-title text-success">Listado de Materias de la Facultad</h3>
+				
+			</div>
+			
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<a  title="Editar Ciclo"
+					class="navbar-brand" 
+					th:href="@{/ciclo/editar/}+${cicloGes.id}" 
+					th:text="'Ciclo '+${cicloGes.semestre}+' '+${cicloGes.anio}"></a>
+				<button class="navbar-toggler" type="button"
+					data-toggle="collapse" data-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+		<!-- ##################################################  ACTIVAR/DESACTIVAR CICLO ###########################################-->
+						<li class="nav-item dropdown bg-light rounded">
+							
+							
+							
+							<a class="nav-link dropdown-toggle  text-secondary" 
+							href="#" 
+							id="navbarDropdown"	role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+							th:text="Inactivo" th:if="${!cicloGes.activo}">
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown" th:if="${!cicloGes.activo}">
+								<a 
+									class="dropdown-item text-success" 
+									data-toggle="modal" 
+                                 			data-target="#activarModal"
+                                 			href="">Activar</a>
+							</div>
+						</li>
+					</ul>
+					
+					
+									
+				</div>
+			</nav>
+						
+						
+			<!-- ############################### BOTON VOLVER ######################### -->
+			<div class="mt-2 ml-2">
+				<a class="btn btn-dark" th:href="@{/ciclo/gestionar/}+${cicloGes.id}">volver</a>
+			</div>
+			
+			<!-- ###################################### ALERTAS ########################### -->
+			<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+			
+			
+			<div class="card-body" style="overflow-x:scroll">
+				<table id="tablaUsuarios" class="table table-sm">
+					<thead>
+						<tr>
+							<th>Codigo</th>
+							<th>Nombre</th>
+							<th>Departamento</th>
+							<th>Accion</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="materia: ${materias}">
+							
+							<td th:text="${materia.codigo}"></td>
+							
+							<td>
+								<a th:href="@{/materia/editar/}+${materia.id}" th:text="${materia.nombre}" title="Editar Materia"></a>
+							</td>
+							
+							<td th:text="${materia.departamento!=null}?${materia.departamento.nombre} :'No Establecido' "
+								th:class="${materia.departamento!=null}?'text-success' : 'text-danger'"></td>
+							
+							<td>
+								<a title="Impartir" th:href="@{/ciclo/impartir/}+${cicloGes.id}+'/'+${materia.id}" class="btn btn-light">
+                                   
+                                    <i class='fas fa-plus-square text-info mr-2'></i>Impartir Materia
+                                </a>
+								
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>		
+	</div>
+
+	<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>
+</body>
+</html>

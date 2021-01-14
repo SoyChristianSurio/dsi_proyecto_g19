@@ -1,12 +1,17 @@
 package com.sigsaaqyf.app.controllers;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sigsaaqyf.app.models.forms.UsuarioRegistro;
 import com.sigsaaqyf.app.models.services.ICicloService;
 
 @Controller
@@ -16,29 +21,34 @@ public class AdminController {
 	ICicloService cicloService;
 	
 	@GetMapping("/")
-	public String homeG(Model model) {
+	public String raiz(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); // Se obtiene la sesion actual
+		//System.out.println();
+		switch (auth.getAuthorities().toArray()[0].toString()) {
+		case "ROLE_admin":
+			
+			System.out.println("entrando en case1: "+auth.getAuthorities().toArray()[0].toString());
+			return "redirect:/ciclo/activo";
+			
+		case "ROLE_estudiante":
+			System.out.println("entrando en case2: "+auth.getAuthorities().toArray()[0].toString());
+			return "redirect:/estudiante/";
 		
+		}
 		return "redirect:/usuario/registro";
 	}
 	
-	@GetMapping("/admin/home")
-	public String homeG(@ModelAttribute("username")String username, Model model) {
-		model.addAttribute("usuario", username);
-		model.addAttribute("ciclos", cicloService.findAllByActivo(false) );
-		return "admin/home";
-	}
-	
-	@PostMapping("/admin/home")
-	public String homeP(@ModelAttribute("username")String username, Model model) {
-		model.addAttribute("usuario", username);
-		return "admin/home";
-	}
-	
-	
-	
-	@GetMapping("/departamentos")
-	public String departamentosLista(Model model){
+	@GetMapping("/login")
+	public String login(@RequestParam(name = "error",required = false)String error, Model model, Principal principal, RedirectAttributes flash) {
+		if(principal != null) {
+			flash.addFlashAttribute("success", "sesión iniciada");
+			return "redirect:/ciclo/activo";
+		}
 		
-		return "";
+		if(error!=null) model.addAttribute("error", "nombre de usuario o contraseña incorrectos");	
+
+		model.addAttribute("usuario", new UsuarioRegistro());
+		return "usuario/login";
 	}
+	
 }

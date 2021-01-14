@@ -4,20 +4,9 @@
 <meta charset="UTF-8" />
 <title th:text="${titulo}"></title>
 
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
-<script th:src="@{/js/popper.min.js}"></script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
- 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
-<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
-    
-    <!--DataTables CSS-->
-<!--     <link rel="stylesheet" href="/js/datatables.min.css"> -->
-<!--     <link rel="stylesheet" href="/js/DataTables-1.10.21/css/dataTables.bootstrap4.min.css"> -->
-<!--     <script type="text/javascript" src="/js/datatables.min.js"></script> -->
-    
-<!--     <script type="text/javascript" src="/js/datatablesCiclos.js"></script> -->
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
 
 </head>
 <body>
@@ -36,7 +25,7 @@
 							<tbody>
 								<tr th:if="${#lists.isEmpty(ciclos)}"><td>no hay ciclos en la base de datos</td></tr>
 								<tr th:each="ciclo : ${ciclos}">
-									<td><a th:text="${ciclo.anio}+' '+${ciclo.semestre}" th:href="@{ciclo/gestionar/}+${ciclo.id}"></a></td>
+									<td><a th:text="${ciclo.anio}+' '+${ciclo.semestre}" th:href="@{/ciclo/gestionar/}+${ciclo.id}"></a></td>
 								</tr>
 								
 								
@@ -44,15 +33,19 @@
 						</table>						
 					</div>
 					<div class="card-footer text-center">
-						<a href="#" class="link text-success">Crear Ciclo</a>
+						<a th:href="@{/ciclo/crear}" class="link text-success">Crear Ciclo</a>
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-10"><!-- ############## CICLO EN GESTION ############## -->
-				<div class="card">
-					<div class="card-header px-0 py-0">
-						<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-							<a class="navbar-brand" href="#">Ciclo 1 2019</a>
+				
+				<H1 class="text-center text-secondary my-4" th:if="${cicloGes==null}">No hay ciclo activo</H1>
+								
+				<div class="card" th:if="${cicloGes}!=null">
+					
+					<div class="card-header px-0 py-0" >
+						<nav th:class="${cicloGes.activo}?'navbar navbar-expand-lg navbar-dark bg-success':'navbar navbar-expand-lg navbar-dark bg-secondary'">
+							<a class="navbar-brand font-weight-bold" th:href="@{/ciclo/editar/}+${cicloGes.id}" th:text="'Ciclo '+${cicloGes.semestre}+' '+${cicloGes.anio}"></a>
 							<button class="navbar-toggler" type="button"
 								data-toggle="collapse" data-target="#navbarSupportedContent"
 								aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -61,61 +54,125 @@
 							</button>
 							<div class="collapse navbar-collapse" id="navbarSupportedContent">
 								<ul class="navbar-nav mr-auto">
+									<!-- ##################################################  ACTIVAR/DESACTIVAR CICLO -->
 									<li class="nav-item dropdown bg-light rounded">
-										<a class="nav-link dropdown-toggle  text-success" href="#" id="navbarDropdown"
-										role="button" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="false"> Activo </a>
-										<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-											<a class="dropdown-item" href="#">Desactivar</a>
+										
+										<a class="nav-link dropdown-toggle  text-success" 
+										href="#" 
+										id="navbarDropdown"	role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+										th:text="Activo" th:if="${cicloGes.activo}">
+										</a>
+										<div class="dropdown-menu" aria-labelledby="navbarDropdown"  th:if="${cicloGes.activo}">
+											<a 
+												class="dropdown-item text-secondary" 
+												data-toggle="modal" 
+                                    			data-target="#desactivarModal"
+                                    			href="">Desactivar</a>
+										</div>
+										
+										<a class="nav-link dropdown-toggle  text-secondary" 
+										href="#" 
+										id="navbarDropdown"	role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+										th:text="Inactivo" th:if="${!cicloGes.activo}">
+										</a>
+										<div class="dropdown-menu" aria-labelledby="navbarDropdown" th:if="${!cicloGes.activo}">
+											<a 
+												class="dropdown-item text-success" 
+												data-toggle="modal" 
+                                    			data-target="#activarModal"
+                                    			href="">Activar</a>
 										</div>
 									</li>
 								</ul>
+								
+								<!-- ###################################### ALERTAS ########################### -->
+								<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>
+								
+								<!-- ###################################### ELIMINAR ########################### -->
+								<div th:if="${#lists.isEmpty(cicloGes.materiasImpartidas)}">
 								<ul class="navbar-nav ml-auto">
-									<li class="nav-item rounded bg-danger">
-										<a class="nav-link py-auto" href="#">
+									<li class="nav-item rounded bg-danger" >
+										<a  class="nav-link py-auto" 
+											data-toggle="modal" 
+                                    		data-target="#eliminarModal"
+											href="">
 											<i class="fas fa-trash-alt mr-1" style="font-size:20px;color:white"/></i>eliminar
 										</a>
 									</li>
 								</ul>
+								</div>
 							</div>
 						</nav>
+						
 					</div>
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">Cras justo odio</li>
-						<li class="list-group-item">Dapibus ac facilisis in</li>
-						<li class="list-group-item">Vestibulum at eros</li>
-						<li class="list-group-item">Cras justo odio</li>
-						<li class="list-group-item">Dapibus ac facilisis in</li>
-						<li class="list-group-item">Vestibulum at eros</li>
-					</ul>
+					<!-- ##################### BOTON IMPARTIR MATERIA ################### -->
+					<div class="mt-2 ml-2">
+						<a class="btn btn-light" th:href="@{/ciclo/impartir/}+${cicloGes.id}">
+							<i class="fa fa-plus mr-2" style="font-size:20px;color:gray"></i> Impartir materia
+						</a>
+					</div>
+					
+					<div class="card-body mx-2" style="overflow-x:scroll">
+						<table id="tablaUsuarios" class="table table-sm">
+							<thead>
+								<tr>
+									<th>Codigo</th>
+									<th>Nombre</th>
+									<th>Departamento</th>
+									<th>Accion</th>
+								</tr>
+							</thead>
+							<tbody>
+								<div th:each="m: ${cicloGes.materiasImpartidas}" th:remove="tag">
+								<tr th:class="${not m.activo}? 'text-secondary':''">
+									
+									<td th:text="${m.materia.codigo}" th:class="${not m.activo}? 'text-secondary font-weight-bold':'text-primary'" ></td>
+									
+									<td>
+										<a th:href="@{/asignatura/gestionar/}+${m.id}" th:text="${m.materia.nombre}" th:class="${not m.activo}? 'text-secondary font-weight-bold'" title="gestionar materia"></a>
+									</td>
+									
+									<td th:text="${m.materia.departamento!=null}?${m.materia.departamento.nombre} :'no establecido' "
+										th:class="${not m.activo}?'text-secondary font-weight-bold':(${m.materia.departamento!=null}?'text-success' : 'text-danger')"></td>
+									
+									<td>
+		                                <button 
+		                                    type="button" 
+		                                    th:class="'btn btn-light'"
+		                                    th:title="${m.activo}?'Dar de Baja':'Activar' "
+		                                    th:onclick="'preConfirmarAccion(\'' + ${m.id} + '\')' " 
+		                                    data-toggle="modal" 
+		                                    th:data-target="${m.activo==true}?'#mdesactivarModal':'#mactivarModal'">
+		                                    <i th:class="${m.activo}? 'fas fa-arrow-circle-down text-warning' : 'fas fa-arrow-circle-up text-primary'" style="font-size:21px"></i>
+		                                </button>
+		                                
+		                                <button 
+		                                    type="button" 
+		                                    class="btn py-1 btn-light" 
+		                                    title="Eliminar"
+		                                    th:onclick="' preConfirmarAccion(\'' + ${m.id} + '\') ' "
+		                                    data-toggle="modal" 
+		                                    data-target="#meliminarModal">
+		                                    <i class='fas fa-trash-alt text-danger'></i>
+		                                </button>
+									</td>
+								</tr>
+								</div>
+							</tbody>
+						</table>
+					</div>
+
 					<div class="card-body">
-						<a href="#" class="card-link">Card link</a> <a href="#"
-							class="card-link">Another link</a>
+						
 					</div>
+					
 				</div>
 			</div>
 		</div>
 	</div>
-<script>
-function filtrarCiclos() {
-	  var input, filter, table, tr, td, i, txtValue;
-	  input = document.getElementById("ciclosInput");
-	  filter = input.value.toUpperCase();
-	  table = document.getElementById("cilosDataTables");
-	  tr = table.getElementsByTagName("tr");
-	  for (i = 0; i < tr.length; i++) {
-	    td = tr[i].getElementsByTagName("td")[0];
-	    if (td) {
-	      txtValue = td.textContent || td.innerText;
-	      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-	        tr[i].style.display = "";
-	      } else {
-	        tr[i].style.display = "none";
-	      }
-	    }       
-	  }
-	}
-</script>
-
+	
+	<div th:insert="ciclo/activar-desactivar-modal.html" th:remove="tag"></div>
+<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>	
+<script type="text/javascript" th:src="@{/js/util/ciclo/activar-desactivar.js}"></script>
 </body>
 </html>

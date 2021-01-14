@@ -19,13 +19,13 @@ function confirmAction(id,activo) {
                 }    
             }
 
-            function deleteUser() {
-                var id = document.getElementById("userIdHidden").value;
-                window.location = "/usuario/eliminar/"+ id;
-            }
+function deleteUser() {
+    var id = document.getElementById("userIdHidden").value;
+    window.location = "/usuario/eliminar/"+ id;
+}
             
-            function lockUser() {
-                var id = document.getElementById("userIdHidden").value;
-                var activo = document.getElementById("userActivoHidden").value;
-                   window.location = "/usuario/cambiarEstado/"+id+"/"+activo;
-            } 
+function lockUser() {
+    var id = document.getElementById("userIdHidden").value;
+    var activo = document.getElementById("userActivoHidden").value;
+       window.location = "/usuario/cambiarEstado/"+id+"/"+activo;
+} 

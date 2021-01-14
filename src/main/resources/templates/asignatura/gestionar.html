@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+
+</head>
+<body>
+	<div th:insert="layouts/navbar_admin.html" th:remove="tag"></div>
+	<div class="container col-12 " >
+		<div class="row py-3 px-3 border border-secondary">
+			<div class="col-sm-2 px-0" th:if="${maimpGes!=null}">
+
+<!-- #################################################################### GRUPOS ############## -->
+
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				  <li class="nav-item"><a class="nav-link px-2 selected" id="teo-tab" data-toggle="tab" href="#teo" role="tab" aria-controls="teo" aria-selected="true">Teo</a></li>
+				  <li class="nav-item"><a class="nav-link px-2" id="dis-tab" data-toggle="tab" href="#dis" role="tab" aria-controls="dis" aria-selected="false">Dis</a></li>
+				  <li class="nav-item"><a class="nav-link px-2" id="lab-tab" data-toggle="tab" href="#lab" role="tab" aria-controls="lab" aria-selected="false">Lab</a></li>
+				  <li class="nav-item"><a class="nav-link px-2" id="eva-tab" data-toggle="tab" href="#eva" role="tab" aria-controls="eva" aria-selected="false">Evaluación</a> </li>
+				</ul>
+				
+				<div class="tab-content" id="myTabContent">
+				<!-- //////////////////////////////////////////////////////  Pestaña  Teo  /////////////////////////////////////////////////// -->
+				  <div th:class="${tabActiva=='dis'}?'tab-pane fade':
+				  				(${tabActiva=='lab'}?'tab-pane fade':
+				  				(${tabActiva=='eva'}?'tab-pane fade':'tab-pane fade show active'))" 
+				  id="teo" role="tabpanel" aria-labelledby="teo-tab">
+				  	 <div class="card p-2">
+						<div class="card-header px-1 py-0">
+							<div class="display-block mx-0 py-1">
+								<a class="btn btn-light text-secondary mx-3 p-1" 
+								   title="Agregar nuevo grupo teórico"
+								   data-toggle="modal"
+								   data-target="#crearTeoModal">  <!-- ENLACE CREAR -->
+								    
+									<i class="fas fa-plus text-success" style="font-size:15px"></i>
+								</a>
+								<span class="text-secondary ">Teóricos</span>
+							</div>
+						</div>
+						<div class="card-body py-1 px-1">
+							<small class="text-secondary" th:if="${#lists.isEmpty(maimpGes.teo)}">Sin grupo teórico aún</small>
+							<ul th:if="${not #lists.isEmpty(maimpGes.teo)}" class=" nav d-flex flex-column">
+								<li th:each="teo : ${maimpGes.teo}">
+									<a class="btn btn-block btn-light text-secondary py-1" th:href="@{/asignatura/gestionar/}+${maimpGes.id}+'/gt/'+${teo.id}">
+										<span class="text-secondary" th:text="'Grupo '+${teo.numeroGrupo}" title="Editar Grupo"></span>
+										<span class="text-success float-right" th:text="'( '+${#lists.size(teo.matriculas)+' )'}" th:title="'('+${#lists.size(teo.matriculas)+') Estudiantes matriculados'}"></span>
+									</a>
+								</li> 
+							</ul>
+						</div>						
+					</div>					  
+				  </div>
+				  
+				  <!-- //////////////////////////////////////////////////////  Pestaña  Dis  /////////////////////////////////////////////////// -->				  
+				  <div  th:class="${tabActiva=='dis'}?'tab-pane fade show active':'tab-pane fade'" 
+				  		id="dis" role="tabpanel" 
+				  		aria-labelledby="dis-tab">
+				  	<div class="card p-2">
+						<div class="card-header px-1 py-0">
+							<div class="display-block mx-0 py-1">
+								<a class="btn btn-light text-secondary mx-3 p-1" 
+								   title="Agregar nuevo grupo de discusión"
+								   data-toggle="modal"
+								   data-target="#crearDisModal"> <!-- ENLACE CREAR -->
+									<i class="fas fa-plus text-success" style="font-size:15px"></i>
+								</a>
+								<span class="text-secondary ">Discusión</span>
+							</div>
+						</div>
+						<div class="card-body py-1 px-1">
+							<small class="text-secondary" th:if="${#lists.isEmpty(maimpGes.dis)}">Sin grupo de discusión aún</small>
+							<ul th:if="${not #lists.isEmpty(maimpGes.dis)}" class=" nav d-flex flex-column">
+								<li th:each="dis : ${maimpGes.dis}">
+									<a class="btn btn-block btn-light text-secondary py-1"  th:href="@{/asignatura/gestionar/}+${maimpGes.id}+'/gd/'+${dis.id}">
+										<span class="text-secondary" th:text="'Grupo '+${dis.numeroGrupo}" title="Editar Grupo"></span>
+										<span class="text-success float-right" th:text="'( '+${#lists.size(dis.matriculas)+' )'}" th:title="'('+${#lists.size(dis.matriculas)+') Estudiantes matriculados'}"></span>
+									</a>
+								</li> 
+							</ul>
+				  		</div>
+				  	</div>
+				  </div>
+				  
+				  <!-- //////////////////////////////////////////////////////  Pestaña  Lab  /////////////////////////////////////////////////// -->
+				  <div  th:class="${tabActiva=='lab'}?'tab-pane fade show active':'tab-pane fade'" 
+				  		id="lab" role="tabpanel" 
+				  		aria-labelledby="lab-tab">
+				  	<div class="card p-2">
+						<div class="card-header px-1 py-0">
+							<div class="display-block mx-0 py-1">
+								<a class="btn btn-light text-secondary mx-3 p-1" 
+								   title="Agregar nuevo grupo de discusión"
+								   data-toggle="modal"
+								   data-target="#crearLabModal"> <!-- ENLACE CREAR -->
+									<i class="fas fa-plus text-success" style="font-size:15px"></i>
+								</a>
+								<span class="text-secondary ">Laboratorios</span>
+							</div>
+						</div>
+						<div class="card-body py-1 px-1">
+							<Small class="text-secondary" th:if="${#lists.isEmpty(maimpGes.lab)}">Sin grupo de laboratorio aún</small>
+							<ul th:if="${not #lists.isEmpty(maimpGes.lab)}" class=" nav d-flex flex-column">
+								<li th:each="lab : ${maimpGes.lab}">
+									<a class="btn btn-block btn-light text-secondary py-1"  th:href="@{/asignatura/gestionar/}+${maimpGes.id}+'/gl/'+${lab.id}">
+										<span class="text-secondary" th:text="'Grupo '+${lab.numeroGrupo}" title="Editar Grupo"></span>
+										<span class="text-success float-right" th:text="'( '+${#lists.size(lab.matriculas)+' )'}" th:title="'('+${#lists.size(lab.matriculas)+') Estudiantes matriculados'}"></span>
+									</a>
+								</li> 
+							</ul>
+				  		</div>
+				  	</div>
+				  </div>
+				  
+				  <!-- //////////////////////////////////////////////////////  Pestaña  Evaluaciones  /////////////////////////////////////////////////// -->
+				  <div  th:class="${tabActiva=='eva'}?'tab-pane fade show active':'tab-pane fade'" 
+				  		id="eva" role="tabpanel" 
+				  		aria-labelledby="eva-tab">
+				  	<div class="card">
+						<div class="card-header px-1 py-0">
+							<div class="display-block mx-0 py-1">
+								<a class="btn btn-light text-secondary mx-3 p-1" 
+								   title="Agregar nueva evaluación"
+								   th:href="@{/asignatura/}+${maimpGes.id}+'/eva/crear'"> <!-- ENLACE CREAR -->
+									<i class="fas fa-plus text-success" style="font-size:15px"></i>
+								</a>
+								<span class="text-secondary ">Evaluaciones</span>
+							</div>
+						</div>
+						<div class="card-body py-1 px-1">
+							<Small class="text-secondary" th:if="${#lists.isEmpty(maimpGes.eva)}">Sin evaluaciones aún</small>
+							<ul th:if="${not #lists.isEmpty(maimpGes.eva)}" class=" nav d-flex flex-column">
+								<li th:each="eva : ${maimpGes.eva}" >
+									
+									<div class="text-secondary py-1 px-2 d-flex flex-right border border-muted mb-1">
+										<div 	th:class="${eva.activo}?'text-success mr-auto h-2':'text-secondary mr-auto h-2'" 
+												th:text="${eva.tipo.clave}+' '+${eva.numeroEvaluacion}" 
+											></div>
+										<a class="btn btn-light py-0" 
+											th:href="@{/asignatura/eva/}+${eva.id}+'/editar'"
+											title="Editar Evaluación">
+											<i th:class="${eva.activo}?'fas fa-edit text-success':'fas fa-edit text-muted'"></i>
+										</a>
+
+										<div class="dropdown">
+										    <button type="button" class="btn btn-light py-0 dropdown-toggle" data-toggle="dropdown" title="Ver listado de solicitudes">
+										    
+										    </button>
+										    <div class="dropdown-menu">
+												<a class="dropdown-item" th:href="@{'/asignatura/solicitudes/rev/'+${eva.id}}"
+													th:title="'Ver listado de solicitudes de Revisión'">
+													<i 	th:class="${eva.revActivo}?'fas fa-circle text-success':'far fa-circle text-muted'"></i>
+													Revisión
+												</a>
+												<a class="dropdown-item" href="#"
+													th:title="'Ver listado de solicitudes de Diferido'">
+													<i 	th:class="${eva.difActivo}?'fas fa-circle text-success':'far fa-circle text-muted'"></i>
+													Diferido
+												</a>
+												
+												<a class="dropdown-item" href="#" 
+													th:title="'Ver listado de solicitudes de Repetido'">
+													<i 	th:class="${eva.repActivo}?'fas fa-circle text-success':'far fa-circle text-muted'"></i>
+													Repetido
+												</a>
+												<a class="dropdown-item" href="#" 
+													th:title="'Ver listado de solicitudes de Cambio de Fecha'">
+													<i 	th:class="${eva.camActivo}?'fas fa-circle text-success':'far fa-circle text-muted'"></i>
+													Cambio de Fecha
+												</a>
+											</div>
+									  </div>
+									</div>
+								</li>
+							</ul>
+				  		</div>
+				  	</div>
+				  </div>
+				</div>						
+				
+				
+				
+			</div>
+<!-- ########################################################### MATERIA IMPARTIDA EN GESTION ############## -->
+			<div class="col-sm-10 pl-2">
+				
+				<div class="bg-light border border-success rounded py-2 px-3 my-1"  th:if="${maimpGes}!=null">
+					<div class="text-muted h5 d-inline-block">Gestión de la materia:</div>
+					<a 	class="btn btn-light font-weight-bold text-secondary float-right" 
+						th:href="@{/ciclo/gestionar/}+${maimpGes.ciclo.id}" 
+						title="Ir a gestión de Ciclo">
+						<span th:text="'Ciclo '+${maimpGes.ciclo.semestre}+' '+${maimpGes.ciclo.anio}"></span>
+						<span th:text="Activo" th:if="${maimpGes.ciclo.activo}" class="text-success"></span>
+						<span th:text="Inactivo" th:if="${!maimpGes.ciclo.activo}" class="text-secondary"></span>
+					</a>
+					<span class="text-success h3 d-block" th:text="${maimpGes.materia.nombre}" th:if="${estudiantes==null}"></span>
+					<a 	class="text-success h3 text-center " 
+						th:text="${maimpGes.materia.nombre}" 
+						th:href="@{/asignatura/gestionar/}+${maimpGes.id}" 
+						th:if="${estudiantes!=null}"></a>
+				</div>
+				
+				<H2 class="text-secondary my-4" th:if="${maimpGes==null}">No existe la materia en este ciclo</H2>
+				<div th:insert="@{/layouts/alertas.html}" th:remove="tag"></div>				
+				
+				<div class="card col-sm-12 px-0" th:if="${maimpGes}!=null">
+					
+					<div class="card-header px-0 py-0" >
+						
+						
+						<div 	class="d-inline-block m-2 py-2 px-4 h5 text-success border rounded bg-light" 
+								th:text="${tituloLista==null}?'Todos los estudiantes':${tituloLista}"></div>
+						
+			<!-- ########################---- SECCION MATRICULAR VIA CSV -----################### -->
+
+						<div class="border border-secondary rounded px-3 py-1 d-inline-block my-2 mx-2 float-right h6">
+							<form class="" method="POST" th:action="@{/asignatura/}+${maimpGes.id}+'/importar/csv'" enctype="multipart/form-data">
+							    <div class="text-success d-inline-block mr-3">Matricular vía archivo .CSV</div>
+							    <small>
+								    <input type="file" name="file" class="" accept=".csv" id="inputGroupFile01">
+								</small>
+								<button type="submit" class="btn btn-light btn-sm border border-secondary rounded py-0" onclick="this.display=none">
+						    		<i class='fas fa-save text-secondary h6'></i>
+						    		<span class="h6 text-secondary">Matricular</span>
+						    	</button>  
+						    </form>
+						</div>	
+			<!-- ####################### Solo al gestionar grupo mostrar docente, si es gt mostrar tambien representante -->
+						<div class="border rounded bg-light mx-2 mb-2 px-4 py-2 " th:if="${estudiantes!=null}">
+							<div class="mb-2">
+								<span>Docente de grupo:</span>
+								<div class="d-inline-block">
+									<span class="text-success" th:if="${docente!=null}" th:text="${docente}"></span>
+									<a class="btn btn-success btn-sm ml-3"
+										th:href="	${tabActiva=='teo'}?@{/asignatura/gt/}+${gtid}+'/docente':
+													(${tabActiva=='dis'}?@{/asignatura/gd/}+${gdid}+'/docente':
+													(${tabActiva=='lab'}?@{/asignatura/gl/}+${glid}+'/docente'))">
+										<i 	class="fas fa-chalkboard-teacher"></i> <span  th:text="${docente==null}?'Asignar':'Cambiar'"></span>
+									</a>
+								</div>
+							</div>
+							
+							<div th:if="${tabActiva=='teo'}">
+								<span>Representante de grupo:</span>
+								<div class="d-inline-block">
+									<span class="text-success" th:if="${representante!=null}" th:text="${representante}"></span>
+									<a class="btn btn-success btn-sm" th:href="@{/asignatura/gt/}+${gtid}+'/representante'" >
+										<i 	class="fas fa-user-plus"></i> <span th:text="${representante==null}?'Asignar':'Cambiar'"></span>
+									</a>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					
+					
+					<div class="card-body mx-2" style="overflow-x:scroll">
+						<table id="tablaUsuarios" class="table table-sm">
+							<thead>
+								<tr>
+									<th>Carnet</th>
+									<th>Nombre</th>
+									<th>GT</th>
+									<th>GD</th>
+									<th>GL</th>
+									<th>Accion</th>
+								</tr>
+							</thead>
+							<tbody>
+								<div th:if="${estudiantes==null}" th:remove="tag">
+									<tr th:each="m: ${maimpGes.matriculas}">
+									
+										<td th:text="${m.estudiante.username}" class="text-primary"></td>
+										
+										<td>
+											<a href="#" th:text="${m.estudiante.getNombreCompleto()}" th:class="${not m.estudiante.activo}? 'text-secondary font-weight-bold'"></a>
+										</td>
+										
+										<td th:text="${m.grupoTeo==null}?'n/a':${m.grupoTeo.numeroGrupo}"></td>
+										<td th:text="${m.grupoDis==null}?'n/a':${m.grupoDis.numeroGrupo}"></td>
+										<td th:text="${m.grupoLab==null}?'n/a':${m.grupoLab.numeroGrupo}"></td>
+										
+										<td>
+			                                <button 
+			                                    type="button" 
+			                                    th:class="'btn btn-light py-0'"
+			                                    title="NO IMPLEMENTADO">
+			                                    <i class="fas fa-tools text-warning" style="font-size:15px"></i>
+			                                </button>
+			                                
+<!-- 			                                <button  -->
+<!-- 			                                    type="button"  -->
+<!-- 			                                    class="btn py-1 btn-light"  -->
+<!-- 			                                    title="Eliminar" -->
+<!-- 			                                    th:onclick="' preConfirmarAccion(\'' + ${m.id} + '\') ' " -->
+<!-- 			                                    data-toggle="modal"  -->
+<!-- 			                                    data-target="#meliminarModal"> -->
+<!-- 			                                    <i class='fas fa-trash-alt text-danger'></i> -->
+<!-- 			                                </button> -->
+										</td>
+									</tr>
+								</div>	
+								
+								<div th:if="${estudiantes!=null}" th:remove="tag">
+									<tr th:each="ma: ${estudiantes}">
+									
+										<td th:text="${ma.carnet}" class="text-primary"></td>
+										
+										<td>
+											<a href="#" th:text="${ma.nombre}" th:class="${not ma.estudianteActivo}? 'text-secondary font-weight-bold'"></a>
+										</td>
+										
+										<td th:text="${ma.gt==null or ma.gt==0}?'n/a':${ma.gt}"></td>
+										<td th:text="${ma.gd==null or ma.gd==0}?'n/a':${ma.gd}"></td>
+										<td th:text="${ma.gl==null or ma.gl==0}?'n/a':${ma.gl}"></td>
+										
+										<td>
+			                                <button 
+			                                    type="button" 
+			                                    th:class="'btn btn-light py-0'"
+			                                    title="NO IMPLEMENTADO">
+			                                    <i class="fas fa-tools text-warning" style="font-size:15px"></i>
+			                                </button>
+			                                
+<!-- 			                                <button  -->
+<!-- 			                                    type="button"  -->
+<!-- 			                                    class="btn py-1 btn-light"  -->
+<!-- 			                                    title="Eliminar" -->
+<!-- 			                                    th:onclick="' preConfirmarAccion(\'' + ${m.id} + '\') ' " -->
+<!-- 			                                    data-toggle="modal"  -->
+<!-- 			                                    data-target="#meliminarModal"> -->
+<!-- 			                                    <i class='fas fa-trash-alt text-danger'></i> -->
+<!-- 			                                </button> -->
+										</td>
+									</tr>
+								</div>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="card-body">
+						
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:insert="asignatura/crear-modal.html" th:remove="tag"></div>
+<script type="text/javascript" th:src="@{/js/app_data_tables/tablaUsuarios.js}"></script>	
+<script type="text/javascript" th:src="@{/js/util/ciclo/activar-desactivar.js}"></script>
+</body>
+</html>

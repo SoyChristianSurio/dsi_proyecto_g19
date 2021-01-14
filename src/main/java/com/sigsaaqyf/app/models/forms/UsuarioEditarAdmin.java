@@ -2,7 +2,9 @@ package com.sigsaaqyf.app.models.forms;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
 
 public class UsuarioEditarAdmin {
 	private Long id;
@@ -10,6 +12,7 @@ public class UsuarioEditarAdmin {
 	@Pattern(regexp = "^[a-z A-Z]{2}[0-9]{5}$", message = "carnet no válido")
 	private String carnet;
 //----------------------------------------------------------------
+	@NotBlank(message = "campo requerido")
 	private String username;
 //----------------------------------------------------------------	
 	@NotBlank(message = "El primer nombre es requerido")
@@ -27,12 +30,23 @@ public class UsuarioEditarAdmin {
 	private String email;
 //----------------------------------------------------------------
 	private Boolean estudiante;
+//----------------------------------------------------------------
+	@NotNull
+	private Long role;
 	
 //########################## GETTERS y SETTERS ##############################
 	
 	
+	
+	
 	public Long getId() {
 		return id;
+	}
+	public Long getRole() {
+		return role;
+	}
+	public void setRole(Long role) {
+		this.role = role;
 	}
 	public void setId(Long id) {
 		this.id = id;

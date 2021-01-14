@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${titulo}"></title>
+
+	<div th:insert="@{/layouts/bootstrap_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/icons_imports.html}" th:remove="tag"></div>
+	<div th:insert="@{/layouts/data_tables_imports.html}" th:remove="tag"></div>
+
+</head>
+<body>
+	<div th:insert="layouts/navbar_admin.html" th:remove="tag"></div>
+	<div class="container col-12 " >
+		<div class="row py-3 px-3 border border-secondary">
+<!-- #################################################################### Solicitud ############## -->		
+			<div class="col-sm-10 px-3 py-3 mx-auto border border-secondary rounded bg-light" th:classappend="${sol.aprobado==null}?'border-secondary':(${sol.aprobado}?'border-success':'border-danger')">
+				<h3 class="mb-0 text-center">UNIVERSIDAD DE EL SALVADOR</h3>
+				<h4 class="mb-0 text-center">Facultad de Química y Farmacia</h4>
+				<p class="mb-1 text-center">Departamento de <span class="font-weight-bold" th:text="${sol.evaluacion.asignatura.materia.departamento.nombre}"></span></p>
+				<h5>Solicitud de revision ordinaria de evaluación</h5>
+				
+				<p>
+					<span class="font-weight-bold" th:text="' '+${sol.evaluacion.asignatura.materia.departamento.jefatura.jefe.getNombreCompleto()}"></span>
+					, por medio de la presente yo,
+					<span class="font-weight-bold" th:text="' '+${sol.matricula.estudiante.getNombreCompleto()}"></span>
+					, estudiante inscrito en la unidad de aprendizaje
+					<span class="font-weight-bold" th:text="' '+${sol.evaluacion.asignatura.materia.nombre}+' ('+${sol.evaluacion.asignatura.materia.codigo}+')'"></span>
+					, con numero de carnet
+					<span class="font-weight-bold" th:text="' '+${sol.matricula.estudiante.username}"></span>
+					, solicito de la manera más atenta se me autorice la Revision Ordinaria de la siguiente actividad evaluada:
+					<span class="font-weight-bold" th:text="' '+${sol.evaluacion.tipo.descripcion}+' '+${sol.evaluacion.numeroEvaluacion}"></span>
+					de la unidad de aprendizaje.
+				</p>
+				<p class="text-right">
+					Ciudad universitaria,
+					<span class="font-weight-bold" th:text="' '+${#dates.format(sol.fechaRegistro, 'dd-MM-yyyy')}" title="dia/mes/año"></span> 
+				</p>
+				
+				<div class="border border-secondary rounded bg-light p-3">
+				<form th:object="${sol}" th:method="post" th:action="@{'/asignatura/revisarRevision'}">
+					<input type="hidden" th:field="*{id}">
+					<input type="hidden" th:field="*{fechaRegistro}">
+					<input type="hidden" th:field="*{matricula}">
+					<input type="hidden" th:field="*{evaluacion}">
+					
+					<div class="form-group">
+					    <label for="Textarea1">Escribir mensaje con el lugar fecha y hora:</label>
+					    <textarea class="form-control" id="Textarea1" rows="3" th:field="*{msg}"></textarea>
+					    <small class="form-text text-danger mb-2" th:if="${otroError}!=null" th:text="${otroError}"></small>
+				  	</div>
+				  	<div class="form-group ">
+					    <label for="Select">Seleccione para aprobar, denegar o permanecer pendiente</label>
+					    <select th:field="*{aprobado}" class="form-control col-sm-3" id="Select">
+					    	<option value="">-- Aprobación Pendiente --</option>
+					    	<option value=true>Aprobar</option>
+					      	<option value=false>Denegar</option>
+					    </select>
+					    
+					</div>
+				  	
+				  	<a class="btn btn-dark btn-sm mb-3" th:href="@{'/asignatura/solicitudes/rev/'+${sol.evaluacion.id}}">Cancelar</a>
+				  	<button type="submit" class="btn btn-primary btn-sm mb-3">Guardar</button>
+				  	
+				</form>
+				</div>
+				
+				
+				
+			</div>
+
+			
+		</div>
+	</div>
+</body>
+</html>
